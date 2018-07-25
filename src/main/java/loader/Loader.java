@@ -26,7 +26,7 @@ class Loader2 {
         System.out.println("Приемники: " + test2.size());
         for (int i=0;i<test2.size();i++) {
             System.out.print(test2.get(i).getSensitivity()+"\t");
-            System.out.println(test2.get(i).getResponse_rate());
+            System.out.println(test2.get(i).getResponseRate());
         }
     }
 }
@@ -36,38 +36,37 @@ public class Loader {
     private JSONObject object;
     private JSONObject fileObject;
     private String fileName;
-    Loader (String fileName) {
+
+    Loader(String fileName) {
         this.fileName = fileName;
         try {
             //Загрузка файла
             fileObject = (JSONObject) parser.parse(new FileReader(this.fileName));
-        }
-        catch (IOException | ParseException ex) {
-                System.out.println("Ошибка загрузки файла");
-                System.exit(1);
+        } catch (IOException | ParseException ex) {
+            System.out.println("Ошибка загрузки файла");
+            System.exit(1);
         }
     }
+
     public ArrayList<Radiant> loadRadiants() {
         ArrayList<Radiant> radiantsList = new ArrayList<>();
         String name;
         double iMax;
         //Загрузка блока
-        JSONArray radiants = (JSONArray) fileObject.get("Radiant");
+        JSONArray radiants = (JSONArray) fileObject.get("Radiants");
         //Загрузка каждого элемента
-        for (int i = 0; i<radiants.size(); i++) {
+        for (int i = 0; i < radiants.size(); i++) {
             object = (JSONObject) radiants.get(i);
             try {
                 name = object.get("name").toString();
-            }
-            catch (NullPointerException ex) {
-                System.out.println("Ошибка: отсутствует name в источнике "+i);
+            } catch (NullPointerException ex) {
+                System.out.println("Ошибка: отсутствует name в источнике " + i);
                 continue;
             }
             try {
                 iMax = Double.parseDouble(object.get("iMax").toString());
-            }
-            catch (NullPointerException ex) {
-                System.out.println("Ошибка: отсутствует iMax в источнике "+i);
+            } catch (NullPointerException ex) {
+                System.out.println("Ошибка: отсутствует iMax в источнике " + i);
                 continue;
             }
             radiantsList.add(new Radiant(iMax, name));
@@ -75,35 +74,35 @@ public class Loader {
         //Возврат ArrayList со всем источниками
         return radiantsList;
     }
+
     public ArrayList<Receiver> loadReceivers() {
         ArrayList<Receiver> receiversList = new ArrayList<>();
         double sensitivity;
         double response_rate;
         //Загрузка блока
-        JSONArray receivers = (JSONArray) fileObject.get("Receiver");
+        JSONArray receivers = (JSONArray) fileObject.get("Receivers");
         //Загрузка каждого элемента
-        for (int i = 0; i<receivers.size(); i++) {
+        for (int i = 0; i < receivers.size(); i++) {
             object = (JSONObject) receivers.get(i);
             try {
                 sensitivity = Double.parseDouble(object.get("sensitivity").toString());
-            }
-            catch (NullPointerException ex) {
-                System.out.println("Ошибка: отсутствует sensitivity в приемнике "+i);
+            } catch (NullPointerException ex) {
+                System.out.println("Ошибка: отсутствует sensitivity в приемнике " + i);
                 continue;
             }
             try {
-                response_rate = Double.parseDouble(object.get("response_rate").toString());
-            }
-            catch (NullPointerException ex) {
-                System.out.println("Ошибка: отсутствует response_rate в источнике "+i);
+                response_rate = Double.parseDouble(object.get("responseRate").toString());
+            } catch (NullPointerException ex) {
+                System.out.println("Ошибка: отсутствует responseRate в источнике " + i);
                 continue;
             }
-            receiversList.add(new Receiver(sensitivity,response_rate));
+            receiversList.add(new Receiver(sensitivity, response_rate));
 
         }
         //Возврат ArrayList со всем приемниками
         return receiversList;
     }
+
     public String getFileName() {
         return fileName;
     }
