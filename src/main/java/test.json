@@ -1,0 +1,22 @@
+{
+  "Radiants": [
+    {
+      "name": "r1",
+      "iMax": "10"
+    },
+    {
+      "iMax": "100",
+      "name": "r2"
+    },
+    {
+      "iMax": "1000",
+      "name": "r3"
+    }
+  ],
+  "Receivers": [
+    {
+      "sensitivity": "10",
+      "responseRate": "100"
+    }
+  ]
+}
