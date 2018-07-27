@@ -33,24 +33,18 @@ public class GLoader {
     }
     //Метод для чтения данных
     private static GLoaderInit getAll(String fileName) {
-        String s;
-        String jsonString = "";
-
         //Считывание файла в строку
-        try (BufferedReader br = new BufferedReader(new FileReader(fileName)))
+        try (FileReader jsonData = new FileReader(fileName))
         {
-            while((s = br.readLine()) != null) {
-                jsonString += s;
-            }
+            //Инициализация Gson
+            Gson gsonObject = new GsonBuilder().create();
+            //Возврат всех значений
+            return gsonObject.fromJson(jsonData, GLoaderInit.class);
+
         } catch(IOException ex) {
             System.out.println("Файл "+fileName+" не найден");
         }
-
-        //Инициализация Gson
-        Gson gsonObject = new GsonBuilder().create();
-
-        //Возврат всех значений
-        return gsonObject.fromJson(jsonString, GLoaderInit.class);
+        return null;
     }
     //Вернуть источники
     public static ArrayList<Radiant> getRadiants(String fileName) {
