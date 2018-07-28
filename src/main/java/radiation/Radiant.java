@@ -39,4 +39,10 @@ public class Radiant {
     public double getI() {
         return i;
     }
+
+    //Автоматическое преобразование в строку
+    @Override
+    public String toString() {
+        return name;
+    }
 }

@@ -1,4 +1,4 @@
-package old;
+/*package gui;
 
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
@@ -27,7 +27,7 @@ public class Panel {
         if (y==-1) y = h/2;
         if (y==-2) x = h;
         Istochnik id1 = new Istochnik (img, type, tochn, x, y);
-        MainGUI.Obstacles.add(id1);
+        mainGUI.Obstacles.add(id1);
         node.setLeftAnchor((id1.imgv), (xstart+x));
         node.setTopAnchor((id1.imgv), (ystart+y));
         node.getChildren().addAll(id1.imgv);
@@ -38,7 +38,7 @@ public class Panel {
         if (y==-1) y = h/2;
         if (y==-2) x = h;
         Diod id1 = new Diod (img, type, x, y);
-        MainGUI.Obstacles.add(id1);
+        mainGUI.Obstacles.add(id1);
         node.setLeftAnchor((id1.imgv), xstart+x);
         node.setTopAnchor((id1.imgv), ystart+y);
         node.getChildren().addAll(id1.imgv);
@@ -56,7 +56,7 @@ public class Panel {
     }
     void addWall(AnchorPane node, double x1,double y1,double z1, double l1, double w1, double h1) {
         Wall id1 = new Wall( x1, y1, z1,  l1,  w1,  h1);
-        MainGUI.Obstacles.add(id1);
+        mainGUI.Obstacles.add(id1);
         id1.imgv.setFitHeight(h1);
         id1.imgv.setFitWidth(w1);
         node.setLeftAnchor((id1.imgv), (xstart+x1));
@@ -76,4 +76,4 @@ public class Panel {
         luch.setStroke(Color.RED);
         node.getChildren().addAll(luch);
     }
-}
+}*/

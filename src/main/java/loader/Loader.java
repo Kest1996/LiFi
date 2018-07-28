@@ -3,6 +3,7 @@ package loader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -17,15 +18,15 @@ class Loader2 {
         //тест загрузки источников
         ArrayList<Radiant> test1 = loader.loadRadiants();
         System.out.println("Источники: " + test1.size());
-        for (int i=0;i<test1.size();i++) {
-            System.out.print(test1.get(i).getName()+"\t");
+        for (int i = 0; i < test1.size(); i++) {
+            System.out.print(test1.get(i).getName() + "\t");
             System.out.println(test1.get(i).getiMax());
         }
         //тест загрузки приемников
         ArrayList<Receiver> test2 = loader.loadReceivers();
         System.out.println("Приемники: " + test2.size());
-        for (int i=0;i<test2.size();i++) {
-            System.out.print(test2.get(i).getSensitivity()+"\t");
+        for (int i = 0; i < test2.size(); i++) {
+            System.out.print(test2.get(i).getSensitivity() + "\t");
             System.out.println(test2.get(i).getResponseRate());
         }
     }
