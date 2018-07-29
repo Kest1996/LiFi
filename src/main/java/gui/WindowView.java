@@ -48,10 +48,7 @@ public class WindowView{
         return label;
     }
     public TextField addTextField(Object defaultText, double x, double y, boolean readonly){
-        TextField textField = new TextField(defaultText.toString());
-        rootNode.getChildren().add(textField);
-        rootNode.setLeftAnchor(textField, x);
-        rootNode.setTopAnchor(textField, y);
+        TextField textField = addTextField(defaultText, x, y);
         if (readonly) { textField.setDisable(readonly); }
         return textField;
     }

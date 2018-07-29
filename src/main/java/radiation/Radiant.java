@@ -13,6 +13,11 @@ public class Radiant {
         this.iMax = iMax;
         this.name = name;
     }
+    public Radiant(double iMax, String name, double i) {
+        this.iMax = iMax;
+        this.name = name;
+        this.i = i;
+    }
 
     public double getiMax() {
         return iMax;

@@ -54,6 +54,9 @@ public class GLoader {
         //Возврат ArrayList источников
         return arrayList;
     }
+    public static ArrayList<Radiant> loadRadiantLibrary() {
+        return loadRadiantLibrary("Library\\Radiants");
+    }
     public static ArrayList<Receiver> loadReceiverLibrary(String path) {
         //Считывание всех файлов в папке
         File directory = new File(path);
@@ -70,5 +73,27 @@ public class GLoader {
         }
         //Возврат ArrayList источников
         return arrayList;
+    }
+
+    public static void SaveNewRadiant(String fileName, Radiant radiant) {
+        SaveNewRadiant("Library\\Radiants", fileName, radiant);
+    }
+    public static void SaveNewRadiant(String path, String fileName, Radiant radiant) {
+        Gson gsonObject = new GsonBuilder().create();
+        String jsonData = gsonObject.toJson(radiant, Radiant.class);
+        try (FileWriter fw = new FileWriter(path+"\\"+fileName+".json")) {
+            fw.write(jsonData);
+        } catch(IOException exc) {
+            System.out.println("I/O Error: " + exc);
+        }
+    }
+
+    public static void RewriteRadiant(String path, String fileName, Radiant radiant) {
+        File file = new File(path+"\\"+fileName+".json");
+        file.delete();
+        SaveNewRadiant(path, fileName, radiant);
+    }
+    public static void RewriteRadiant(String fileName, Radiant radiant) {
+        RewriteRadiant("Library\\Radiants", fileName, radiant);
     }
 }

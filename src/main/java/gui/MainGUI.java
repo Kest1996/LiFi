@@ -31,12 +31,14 @@ public class MainGUI extends Application {
     public static ArrayList<RadiantGUI> RadiantGUIList = new ArrayList<>();
     private static Button addRadiantButton;
     public static WindowView LFWindow;
+    public static Stage primaryStage;
 
     public static void main(String[] args) {
         launch(args);
     }
     public void start(Stage LFStage)   {
 
+        primaryStage = LFStage;
         // Создание базы окна
         LFStage.setTitle("LI-FI TEST");
         LFWindow = new WindowView(1280,(720-50));
@@ -117,23 +119,8 @@ public class MainGUI extends Application {
         rootNode.setTopAnchor(DELETEALL, 600.0);
         rootNode.getChildren().addAll(DELETEALL);
         */
-        //Показать сцену
+    }
 
-    }
-    /*
-    private static void deleteAllRadiantsGUI(int start, int finish) {
-        for (int i=finish;i>=start;i--) {
-            LFWindow.deleteRadiantGUI(RadiantGUIList.get(i),RadiantGUIList.get(i).getId());
-        }
-        RadiantGUIList = new ArrayList<>();
-    }
-    private static void deleteAllRadiantsGUI(int start) {
-        deleteAllRadiantsGUI(start,RadiantGUIList.size()-1);
-    }
-    private static void deleteAllRadiantsGUI() {
-        deleteAllRadiantsGUI(0,RadiantGUIList.size()-1);
-    }
-    */
     public static void moveRadiantsGUI (int start, int finish){
         int marginY = 60;
         for (int i=start;i<finish;i++){
@@ -147,6 +134,9 @@ public class MainGUI extends Application {
     }
     public static void moveRadiantsGUI (){
         moveRadiantsGUI (0, radiants.size());
+    }
+    public static void listt() {
+        System.out.println(radiantsObservableList);
     }
 }
 
