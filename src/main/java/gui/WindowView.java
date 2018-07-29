@@ -94,7 +94,7 @@ public class WindowView{
         rootNode.setLeftAnchor(radiantEditButton, x+marginX);
         rootNode.setTopAnchor(radiantEditButton, y);
         //Создание и расположение кнопки для удаления
-        Button radiantDeleteButton = radiantGUI.getDeleteButtonButton();
+        Button radiantDeleteButton = radiantGUI.getDeleteButton();
         rootNode.getChildren().add(radiantDeleteButton);
         rootNode.setLeftAnchor(radiantDeleteButton, x+marginX+100);
         rootNode.setTopAnchor(radiantDeleteButton, y);
@@ -131,5 +131,71 @@ public class WindowView{
         textField.setPrefColumnCount(7);
         //Установка значения
         return radiantGUI;
+    }
+
+    public void removeRadiantGUI(RadiantGUI radiantGUI, int id) {
+        ArrayList<Object> objects = radiantGUI.getDeleteItems();
+        for (int i=(objects.size()-1); i>=0; i--) {
+            rootNode.getChildren().remove(objects.get(i));
+        }
+        MainGUI.RadiantGUIList.remove(radiantGUI);
+        MainGUI.moveRadiantsGUI(id);
+    }
+    /*
+    public void deleteRadiantGUI(RadiantGUI r, int id) {
+        ArrayList<Object> objects = r.getdelete();
+        for (int i=(objects.size()-1); i>=0; i--) {
+            rootNode.getChildren().remove(objects.get(i));
+        }
+        MainGUI.RadiantGUIList.remove(r);
+    }
+    */
+
+    public void moveRadiantGUI(RadiantGUI radiantGUI, double newX, double newY) {
+        int marginX = 170;
+        int marginX2 = 100;
+        int marginY = 30;
+        Label label;
+        TextField textField;
+        //Расположение списка
+        ComboBox<Radiant> radiantList = radiantGUI.getList();
+        rootNode.setLeftAnchor(radiantList, newX);
+        rootNode.setTopAnchor(radiantList, newY);
+        //Расположение кнопки для редактирования
+        Button radiantEditButton = radiantGUI.getEditButton();
+        rootNode.setLeftAnchor(radiantEditButton, newX+marginX);
+        rootNode.setTopAnchor(radiantEditButton, newY);
+        //Расположениекнопки для удаления
+        Button radiantDeleteButton = radiantGUI.getDeleteButton();
+        rootNode.setLeftAnchor(radiantDeleteButton, newX+marginX+100);
+        rootNode.setTopAnchor(radiantDeleteButton, newY);
+        //Расположение полей и подписей для указания координат
+        //X
+        label =  radiantGUI.getxL();
+        rootNode.setLeftAnchor(label, newX);
+        rootNode.setTopAnchor(label, newY+marginY);
+        textField = radiantGUI.getxTF();
+        rootNode.setLeftAnchor(textField, newX+15);
+        rootNode.setTopAnchor(textField, newY+marginY);
+        textField.setPrefColumnCount(7);
+        //Y
+        label =  radiantGUI.getyL();
+        rootNode.setLeftAnchor(label, newX+15+marginX2);
+        rootNode.setTopAnchor(label, newY+marginY);
+        textField = radiantGUI.getyTF();
+        rootNode.setLeftAnchor(textField, newX+15+marginX2+15);
+        rootNode.setTopAnchor(textField, newY+marginY);
+        textField.setPrefColumnCount(7);
+        //Z
+        label =  radiantGUI.getzL();
+        rootNode.setLeftAnchor(label, newX+15+marginX2+15+marginX2);
+        rootNode.setTopAnchor(label, newY+marginY);
+        textField = radiantGUI.getzTF();
+        rootNode.setLeftAnchor(textField, newX+15+marginX2+15+marginX2+15);
+        rootNode.setTopAnchor(textField, newY+marginY);
+    }
+    public void moveButton(Button button, double newX, double newY) {
+        rootNode.setLeftAnchor(button, newX);
+        rootNode.setTopAnchor(button, newY);
     }
 }

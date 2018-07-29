@@ -23,7 +23,14 @@ import radiation.Receiver;
 import java.util.ArrayList;
 
 public class MainGUI extends Application {
-    static AnchorPane rootNode;
+    private static AnchorPane rootNode;
+    private static  ArrayList<Radiant> radiants;
+    private static ArrayList<Receiver> receivers;
+    private static ArrayList<Radiant> radiantsLibrary;
+    private static ObservableList<Radiant> radiantsObservableList;
+    public static ArrayList<RadiantGUI> RadiantGUIList = new ArrayList<>();
+    private static Button addRadiantButton;
+    public static WindowView LFWindow;
 
     public static void main(String[] args) {
         launch(args);
@@ -32,7 +39,7 @@ public class MainGUI extends Application {
 
         // Создание базы окна
         LFStage.setTitle("LI-FI TEST");
-        WindowView LFWindow = new WindowView(1280,(720-50));
+        LFWindow = new WindowView(1280,(720-50));
         rootNode = LFWindow.getRootNode();
         LFStage.setScene(LFWindow.getScene());
 
@@ -68,53 +75,78 @@ public class MainGUI extends Application {
         SeparatingLine2.setStroke(Color.BLACK);
         rootNode.getChildren().addAll(SeparatingLine2);
 
+        openFile("test.json",LFWindow);
+
+
+        LFStage.show();
+    }
+    private void openFile(String fileName, WindowView window) {
         //Чтение файла
-        String fileName = "test.json";
-        ArrayList<Radiant> radiants = loader.GLoader.getRadiants(fileName);
-        ArrayList<Receiver> receivers = loader.GLoader.getReceivers(fileName);
+        radiants = loader.GLoader.getRadiants(fileName);
+        receivers = loader.GLoader.getReceivers(fileName);
 
         //Вывод источников:
-        LFWindow.addLabel("Источники:",100,70,20);
+        window.addLabel("Источники:",100,70,20);
         //Чтение библиотеки источников:
-        ArrayList<Radiant> radiantsLibrary = GLoader.loadRadiantLibrary("Library\\Radiants");
-        ObservableList<Radiant> radiantsObservableList = FXCollections.observableArrayList(radiantsLibrary);
+        radiantsLibrary = GLoader.loadRadiantLibrary("Library\\Radiants");
+        radiantsObservableList = FXCollections.observableArrayList(radiantsLibrary);
         //Создание GUI источников
         int marginY = 60;
-        ArrayList<RadiantGUI> RadiantGUIList = new ArrayList<>();
         for (int i=0;i<radiants.size();i++){
-            RadiantGUIList.add(LFWindow.addRadiantGUI(radiantsObservableList,50,100+i*marginY, i, radiants.get(i)));
+            RadiantGUIList.add(window.addRadiantGUI(radiantsObservableList,50,100+i*marginY, i, radiants.get(i)));
         }
         //Создание кнопки для добавления источников
-        Button addRadiantButton = LFWindow.addButton("Добавить",50,100+RadiantGUIList.size()*marginY);
+        addRadiantButton = window.addButton("Добавить",50,100+RadiantGUIList.size()*marginY);
         addRadiantButton.setOnAction((ae) -> {
-            RadiantGUIList.add(LFWindow.addRadiantGUI(radiantsObservableList,50,100+RadiantGUIList.size()*marginY, RadiantGUIList.size()));
+            RadiantGUIList.add(window.addRadiantGUI(radiantsObservableList,50,100+RadiantGUIList.size()*marginY, RadiantGUIList.size()));
             rootNode.setTopAnchor(addRadiantButton, (double)(100+RadiantGUIList.size()*marginY));
         });
 
 
 
         //Вывод приемников:
-        LFWindow.addLabel("Приемники:",520,70,20);
+        window.addLabel("Приемники:",520,70,20);
 
-       /* //Кнопка
-        Button buttongetE = new Button("getE()");
-        buttongetE.setOnAction((ae) -> {
-            double sum = 0;
-            double[] luchinfo;
-            for (double i=0; i<=180; i=(i+(180.0/priem.tochn))) {
-                luchinfo = priem.getE(i);
-                sum = sum + luchinfo[0];
-                mainGUI.LeftPanel.addLuch(mainGUI.rootNode, luchinfo[1], luchinfo[2], luchinfo[3], luchinfo[4]);
-            }
-            //System.out.println("Приемник получил "+sum+" энергии");
-            EnOut.setText("Приемник получил "+sum+" энергии");
+       ///Кнопка
+        /*
+        Button DELETEALL = new Button("УДАЛИТЬ");
+        DELETEALL.setOnAction((ae) -> {
+            deleteAllRadiantsGUI();
         });
-        rootNode.setLeftAnchor(buttongetE, 100.0);
-        rootNode.setTopAnchor(buttongetE, 600.0);
-        rootNode.getChildren().addAll(buttongetE);
-*/
+        rootNode.setLeftAnchor(DELETEALL, 100.0);
+        rootNode.setTopAnchor(DELETEALL, 600.0);
+        rootNode.getChildren().addAll(DELETEALL);
+        */
         //Показать сцену
-        LFStage.show();
+
+    }
+    /*
+    private static void deleteAllRadiantsGUI(int start, int finish) {
+        for (int i=finish;i>=start;i--) {
+            LFWindow.deleteRadiantGUI(RadiantGUIList.get(i),RadiantGUIList.get(i).getId());
+        }
+        RadiantGUIList = new ArrayList<>();
+    }
+    private static void deleteAllRadiantsGUI(int start) {
+        deleteAllRadiantsGUI(start,RadiantGUIList.size()-1);
+    }
+    private static void deleteAllRadiantsGUI() {
+        deleteAllRadiantsGUI(0,RadiantGUIList.size()-1);
+    }
+    */
+    public static void moveRadiantsGUI (int start, int finish){
+        int marginY = 60;
+        for (int i=start;i<finish;i++){
+            LFWindow.moveRadiantGUI(RadiantGUIList.get(i),50,100+i*marginY);
+            RadiantGUIList.get(i).setId(i);
+        }
+        LFWindow.moveButton(addRadiantButton,50,100+RadiantGUIList.size()*marginY);
+    }
+    public static void moveRadiantsGUI (int start){
+        moveRadiantsGUI (start, RadiantGUIList.size());
+    }
+    public static void moveRadiantsGUI (){
+        moveRadiantsGUI (0, radiants.size());
     }
 }
 

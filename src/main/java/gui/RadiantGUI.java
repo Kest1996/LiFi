@@ -32,13 +32,7 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.control.Button;
 
-
-
-
-
-
 public class RadiantGUI {
-    private Radiant radiant;
     private transient int id;
     private transient ObservableList<Radiant> radiantsObservableList;
     private transient ComboBox<Radiant> radiantsList;
@@ -50,18 +44,18 @@ public class RadiantGUI {
     private transient Label xL;
     private transient Label yL;
     private transient Label zL;
-   RadiantGUI(ObservableList<Radiant> radiantsObservableList, int id) {
+    RadiantGUI(ObservableList<Radiant> radiantsObservableList, int id) {
        this.id = id;
        //Выпадающий список
        this.radiantsList = new ComboBox<>(radiantsObservableList);
+      /*
        this.radiantsList.valueProperty().addListener((ae) -> {
-           setObject(radiantsList.getValue());
+
        });
+       */
        //Кнопка для удаления
        deleteButton = new Button("Удалить");
-       deleteButton.setOnAction((ae) -> {
-           System.out.println("Удаление");
-       });
+       deleteButton.setOnAction(this::DeleteButtonReact);
        //Кнопка для редактирования
        editButton = new Button("Редактировать");
        editButton.setOnAction((ae) -> {
@@ -70,8 +64,9 @@ public class RadiantGUI {
        //X
        xL = new Label("X:");
        xTF = new TextField("0");
+       //Чтобы только целые числа
        xTF.textProperty().addListener((ae,oldValue,newValue)-> { {
-           if (!newValue.matches("\\d*") ){
+           if (!newValue.matches("^[1-9][0-9]*") & newValue!="0" ){
                xTF.setText(oldValue);
            }
        }
@@ -79,8 +74,9 @@ public class RadiantGUI {
        //Y
        yL = new Label("Y:");
        yTF = new TextField("0");
+       //Чтобы только целые числа
        yTF.textProperty().addListener((ae,oldValue,newValue)-> { {
-           if (!newValue.matches("\\d*") ){
+           if (!newValue.matches("^[1-9][0-9]*") & newValue!="0"){
                yTF.setText(oldValue);
            }
        }
@@ -88,39 +84,65 @@ public class RadiantGUI {
        //Z
        zL = new Label("Z:");
        zTF = new TextField("0");
+       //Чтобы только целые числа
        zTF.textProperty().addListener((ae,oldValue,newValue)-> { {
-           if (!newValue.matches("\\d*") ){
+           if (!newValue.matches("^[1-9][0-9]*") & newValue!="0"){
                zTF.setText(oldValue);
            }
        }
        });
-   }
+    }
     RadiantGUI(ObservableList<Radiant> radiantsObservableList, int id, Radiant value) {
         this(radiantsObservableList, id);
-        this.radiant = value;
         this.radiantsList.setValue(value);
     }
     public ComboBox<Radiant> getList() {
         return radiantsList;
     }
-    public Button getDeleteButtonButton() {
+    public Button getDeleteButton() {
         return deleteButton;
     }
     public Button getEditButton() {
         return editButton;
     }
-    public void setObject(Radiant radiant){
-        Gson gson = new GsonBuilder().create();
-        String jsonData = gson.toJson(radiant,Radiant.class);
-        radiant = gson.fromJson(jsonData, Radiant.class);
-    }
+    //Функции, нужные для добавления полей и их расположения на сцене
     public TextField getxTF() { return xTF; }
     public TextField getyTF() { return yTF; }
     public TextField getzTF() { return zTF; }
     public Label getxL() { return xL; }
     public Label getyL() { return yL; }
     public Label getzL() { return zL; }
+    //Возврат установленных координат
+    public int getX() { return Integer.parseInt(xTF.getText()); }
+    public int getY() { return Integer.parseInt(yTF.getText()); }
+    public int getZ() { return Integer.parseInt(zTF.getText()); }
+    //Возврат объекта
     public Radiant getObject() {
-        return radiant;
+        return radiantsList.getValue();
+    }
+    //Возврат всех элементов для удаления
+    public ArrayList<Object> getDeleteItems() {
+       ArrayList<Object> objects = new ArrayList<>();
+       objects.add(radiantsList);
+       objects.add(deleteButton);
+       objects.add(editButton);
+       objects.add(xTF);
+       objects.add(yTF);
+       objects.add(zTF);
+       objects.add(xL);
+       objects.add(yL);
+       objects.add(zL);
+       return objects;
+    }
+    //Управление Id
+    public int getId() {
+        return id;
+    }
+    public void setId(int newId) {
+        this.id = newId;
+    }
+    //Реакция на кнопку
+    private void DeleteButtonReact(ActionEvent ae) {
+        MainGUI.LFWindow.removeRadiantGUI(this, id);
     }
 }
