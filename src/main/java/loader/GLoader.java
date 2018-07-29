@@ -75,6 +75,10 @@ public class GLoader {
         return arrayList;
     }
 
+    public static ArrayList<Receiver> loadReceiverLibrary() {
+        return loadReceiverLibrary("Library\\Receivers");
+    }
+    //Функции записи источников
     public static void SaveNewRadiant(String fileName, Radiant radiant) {
         SaveNewRadiant("Library\\Radiants", fileName, radiant);
     }
@@ -95,5 +99,28 @@ public class GLoader {
     }
     public static void RewriteRadiant(String fileName, Radiant radiant) {
         RewriteRadiant("Library\\Radiants", fileName, radiant);
+    }
+
+    //Функции записи приемников
+    public static void SaveNewReceiver(String fileName, Receiver receiver) {
+        SaveNewReceiver("Library\\Receivers", fileName, receiver);
+    }
+    public static void SaveNewReceiver(String path, String fileName, Receiver receiver) {
+        Gson gsonObject = new GsonBuilder().create();
+        String jsonData = gsonObject.toJson(receiver, Receiver.class);
+        try (FileWriter fw = new FileWriter(path+"\\"+fileName+".json")) {
+            fw.write(jsonData);
+        } catch(IOException exc) {
+            System.out.println("I/O Error: " + exc);
+        }
+    }
+
+    public static void RewriteReceiver(String path, String fileName, Receiver receiver) {
+        File file = new File(path+"\\"+fileName+".json");
+        file.delete();
+        SaveNewReceiver(path, fileName, receiver);
+    }
+    public static void RewriteReceiver(String fileName, Receiver receiver) {
+        RewriteReceiver("Library\\Receivers", fileName, receiver);
     }
 }

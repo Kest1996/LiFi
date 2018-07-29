@@ -66,6 +66,13 @@ public class WindowView{
         rootNode.setTopAnchor(button, y);
         return button;
     }
+    public void moveButton(Button button, double newX, double newY) {
+        rootNode.setLeftAnchor(button, newX);
+        rootNode.setTopAnchor(button, newY);
+    }
+
+    //RadiantGUI
+
     public RadiantGUI addRadiantGUI(ObservableList<Radiant> radiantsObservableList, double x, double y, int id) {
         RadiantGUI radiantGUI = addRadiantGUI(radiantsObservableList,x,y,id,radiantsObservableList.get(0));
         return radiantGUI;
@@ -138,16 +145,6 @@ public class WindowView{
         MainGUI.RadiantGUIList.remove(radiantGUI);
         MainGUI.moveRadiantsGUI(id);
     }
-    /*
-    public void deleteRadiantGUI(RadiantGUI r, int id) {
-        ArrayList<Object> objects = r.getdelete();
-        for (int i=(objects.size()-1); i>=0; i--) {
-            rootNode.getChildren().remove(objects.get(i));
-        }
-        MainGUI.RadiantGUIList.remove(r);
-    }
-    */
-
     public void moveRadiantGUI(RadiantGUI radiantGUI, double newX, double newY) {
         int marginX = 170;
         int marginX2 = 100;
@@ -191,8 +188,124 @@ public class WindowView{
         rootNode.setLeftAnchor(textField, newX+15+marginX2+15+marginX2+15);
         rootNode.setTopAnchor(textField, newY+marginY);
     }
-    public void moveButton(Button button, double newX, double newY) {
-        rootNode.setLeftAnchor(button, newX);
-        rootNode.setTopAnchor(button, newY);
+
+
+
+    //ReceiverGUI
+
+    public ReceiverGUI addReceiverGUI(ObservableList<Receiver> receiversObservableList, double x, double y, int id) {
+        ReceiverGUI receiverGUI = addReceiverGUI(receiversObservableList,x,y,id,receiversObservableList.get(0));
+        return receiverGUI;
+    }
+    public ReceiverGUI addReceiverGUI(ObservableList<Receiver> receiversObservableList, double x, double y, int id, Receiver value) {
+        //Отступ между списком и кнопкой
+        int marginX = 170;
+        int marginX2 = 100;
+        int marginY = 30;
+        Label label;
+        TextField textField;
+        //Создание объекта
+        ReceiverGUI receiverGUI = new ReceiverGUI(receiversObservableList, id, value);
+        //Создание и расположение списка
+        ComboBox<Receiver> receiverList = receiverGUI.getList();
+        rootNode.getChildren().add(receiverList);
+        rootNode.setLeftAnchor(receiverList, x);
+        rootNode.setTopAnchor(receiverList, y);
+        receiverList.setPrefWidth(150);
+        //Создание и расположение кнопки для редактирования
+        Button receiverEditButton = receiverGUI.getEditButton();
+        rootNode.getChildren().add(receiverEditButton);
+        rootNode.setLeftAnchor(receiverEditButton, x+marginX);
+        rootNode.setTopAnchor(receiverEditButton, y);
+        //Создание и расположение кнопки для удаления
+        Button receiverDeleteButton = receiverGUI.getDeleteButton();
+        rootNode.getChildren().add(receiverDeleteButton);
+        rootNode.setLeftAnchor(receiverDeleteButton, x+marginX+100);
+        rootNode.setTopAnchor(receiverDeleteButton, y);
+        //Создание полей и подписей для указания координат
+        //X
+        label =  receiverGUI.getxL();
+        rootNode.getChildren().add(label);
+        rootNode.setLeftAnchor(label, x);
+        rootNode.setTopAnchor(label, y+marginY);
+        textField = receiverGUI.getxTF();
+        rootNode.getChildren().add(textField);
+        rootNode.setLeftAnchor(textField, x+15);
+        rootNode.setTopAnchor(textField, y+marginY);
+        textField.setPrefColumnCount(7);
+        //Y
+        label =  receiverGUI.getyL();
+        rootNode.getChildren().add(label);
+        rootNode.setLeftAnchor(label, x+15+marginX2);
+        rootNode.setTopAnchor(label, y+marginY);
+        textField = receiverGUI.getyTF();
+        rootNode.getChildren().add(textField);
+        rootNode.setLeftAnchor(textField, x+15+marginX2+15);
+        rootNode.setTopAnchor(textField, y+marginY);
+        textField.setPrefColumnCount(7);
+        //Z
+        label =  receiverGUI.getzL();
+        rootNode.getChildren().add(label);
+        rootNode.setLeftAnchor(label, x+15+marginX2+15+marginX2);
+        rootNode.setTopAnchor(label, y+marginY);
+        textField = receiverGUI.getzTF();
+        rootNode.getChildren().add(textField);
+        rootNode.setLeftAnchor(textField, x+15+marginX2+15+marginX2+15);
+        rootNode.setTopAnchor(textField, y+marginY);
+        textField.setPrefColumnCount(7);
+        //Установка значения
+        return receiverGUI;
+    }
+
+    public void removeReceiverGUI(ReceiverGUI receiverGUI, int id) {
+        ArrayList<Object> objects = receiverGUI.getDeleteItems();
+        for (int i=(objects.size()-1); i>=0; i--) {
+            rootNode.getChildren().remove(objects.get(i));
+        }
+        MainGUI.ReceiverGUIList.remove(receiverGUI);
+        MainGUI.moveReceiversGUI(id);
+    }
+    public void moveReceiverGUI(ReceiverGUI receiverGUI, double newX, double newY) {
+        int marginX = 170;
+        int marginX2 = 100;
+        int marginY = 30;
+        Label label;
+        TextField textField;
+        //Расположение списка
+        ComboBox<Receiver> receiverList = receiverGUI.getList();
+        rootNode.setLeftAnchor(receiverList, newX);
+        rootNode.setTopAnchor(receiverList, newY);
+        //Расположение кнопки для редактирования
+        Button receiverEditButton = receiverGUI.getEditButton();
+        rootNode.setLeftAnchor(receiverEditButton, newX+marginX);
+        rootNode.setTopAnchor(receiverEditButton, newY);
+        //Расположениекнопки для удаления
+        Button receiverDeleteButton = receiverGUI.getDeleteButton();
+        rootNode.setLeftAnchor(receiverDeleteButton, newX+marginX+100);
+        rootNode.setTopAnchor(receiverDeleteButton, newY);
+        //Расположение полей и подписей для указания координат
+        //X
+        label =  receiverGUI.getxL();
+        rootNode.setLeftAnchor(label, newX);
+        rootNode.setTopAnchor(label, newY+marginY);
+        textField = receiverGUI.getxTF();
+        rootNode.setLeftAnchor(textField, newX+15);
+        rootNode.setTopAnchor(textField, newY+marginY);
+        textField.setPrefColumnCount(7);
+        //Y
+        label =  receiverGUI.getyL();
+        rootNode.setLeftAnchor(label, newX+15+marginX2);
+        rootNode.setTopAnchor(label, newY+marginY);
+        textField = receiverGUI.getyTF();
+        rootNode.setLeftAnchor(textField, newX+15+marginX2+15);
+        rootNode.setTopAnchor(textField, newY+marginY);
+        textField.setPrefColumnCount(7);
+        //Z
+        label =  receiverGUI.getzL();
+        rootNode.setLeftAnchor(label, newX+15+marginX2+15+marginX2);
+        rootNode.setTopAnchor(label, newY+marginY);
+        textField = receiverGUI.getzTF();
+        rootNode.setLeftAnchor(textField, newX+15+marginX2+15+marginX2+15);
+        rootNode.setTopAnchor(textField, newY+marginY);
     }
 }

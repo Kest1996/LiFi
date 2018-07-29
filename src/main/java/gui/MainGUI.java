@@ -24,14 +24,23 @@ import java.util.ArrayList;
 
 public class MainGUI extends Application {
     private static AnchorPane rootNode;
+    public static WindowView LFWindow;
+    public static Stage primaryStage;
+
     private static  ArrayList<Radiant> radiants;
-    private static ArrayList<Receiver> receivers;
     private static ArrayList<Radiant> radiantsLibrary;
     private static ObservableList<Radiant> radiantsObservableList;
     public static ArrayList<RadiantGUI> RadiantGUIList = new ArrayList<>();
     private static Button addRadiantButton;
-    public static WindowView LFWindow;
-    public static Stage primaryStage;
+
+    private static ArrayList<Receiver> receivers;
+    private static ArrayList<Receiver> receiversLibrary;
+    private static ObservableList<Receiver> receiversObservableList;
+    public static ArrayList<ReceiverGUI> ReceiverGUIList = new ArrayList<>();
+    private static Button addReceiverButton;
+
+
+    int marginY = 60;
 
     public static void main(String[] args) {
         launch(args);
@@ -93,7 +102,6 @@ public class MainGUI extends Application {
         radiantsLibrary = GLoader.loadRadiantLibrary("Library\\Radiants");
         radiantsObservableList = FXCollections.observableArrayList(radiantsLibrary);
         //Создание GUI источников
-        int marginY = 60;
         for (int i=0;i<radiants.size();i++){
             RadiantGUIList.add(window.addRadiantGUI(radiantsObservableList,50,100+i*marginY, i, radiants.get(i)));
         }
@@ -108,6 +116,19 @@ public class MainGUI extends Application {
 
         //Вывод приемников:
         window.addLabel("Приемники:",520,70,20);
+        //Чтение библиотеки приемников:
+        receiversLibrary = GLoader.loadReceiverLibrary("Library\\Receivers");
+        receiversObservableList = FXCollections.observableArrayList(receiversLibrary);
+        //Создание GUI источников
+        for (int i=0;i<receivers.size();i++){
+            ReceiverGUIList.add(window.addReceiverGUI(receiversObservableList,440,100+i*marginY, i, receivers.get(i)));
+        }
+        //Создание кнопки для добавления источников
+        addReceiverButton = window.addButton("Добавить",440,100+ReceiverGUIList.size()*marginY);
+        addReceiverButton.setOnAction((ae) -> {
+            ReceiverGUIList.add(window.addReceiverGUI(receiversObservableList,440,100+ReceiverGUIList.size()*marginY, ReceiverGUIList.size()));
+            rootNode.setTopAnchor(addReceiverButton, (double)(100+ReceiverGUIList.size()*marginY));
+        });
 
        ///Кнопка
         /*
@@ -120,7 +141,7 @@ public class MainGUI extends Application {
         rootNode.getChildren().addAll(DELETEALL);
         */
     }
-
+    //Перемещение источников
     public static void moveRadiantsGUI (int start, int finish){
         int marginY = 60;
         for (int i=start;i<finish;i++){
@@ -133,10 +154,23 @@ public class MainGUI extends Application {
         moveRadiantsGUI (start, RadiantGUIList.size());
     }
     public static void moveRadiantsGUI (){
-        moveRadiantsGUI (0, radiants.size());
+        moveRadiantsGUI (0, RadiantGUIList.size());
     }
-    public static void listt() {
-        System.out.println(radiantsObservableList);
+
+    //Перемещение приемников
+    public static void moveReceiversGUI (int start, int finish){
+        int marginY = 60;
+        for (int i=start;i<finish;i++){
+            LFWindow.moveReceiverGUI(ReceiverGUIList.get(i),440,100+i*marginY);
+            ReceiverGUIList.get(i).setId(i);
+        }
+        LFWindow.moveButton(addReceiverButton,440,100+ReceiverGUIList.size()*marginY);
+    }
+    public static void moveReceiversGUI (int start){
+        moveReceiversGUI (start, ReceiverGUIList.size());
+    }
+    public static void moveReceiversGUI (){
+        moveRadiantsGUI (0, ReceiverGUIList.size());
     }
 }
 

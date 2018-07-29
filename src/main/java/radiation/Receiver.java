@@ -4,11 +4,13 @@ public class Receiver {
     //для приемника нужны чувствительность, скорость отклика и энергия
     private double sensitivity;
     private double responseRate;
-    private double energy = 0;
+    transient private double energy = 0;
+    private String name;
 
-    public Receiver (double sensitivity, double response_rate) {
+    public Receiver (String name,double sensitivity, double response_rate) {
         this.sensitivity = sensitivity;
         this.responseRate = response_rate;
+        this.name = name;
     }
 
     public double getSensitivity() {
@@ -31,4 +33,12 @@ public class Receiver {
         return energy;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public String toString() {
+        return name;
+    }
 }
