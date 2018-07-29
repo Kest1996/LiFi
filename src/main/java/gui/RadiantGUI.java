@@ -1,35 +1,18 @@
 package gui;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.scene.Node;
 import javafx.scene.control.ComboBox;
 import javafx.stage.Modality;
 import loader.GLoader;
 import radiation.Radiant;
-
-import java.io.File;
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import javafx.event.*;
 import javafx.scene.control.TextField;
-import javafx.application.Application;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
-import javafx.scene.control.ComboBox;
-import javafx.collections.ObservableList;
-import javafx.collections.FXCollections;
-import javafx.geometry.Orientation;
-import javafx.scene.control.*;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.shape.Line;
-import javafx.stage.Stage;
 
 public class RadiantGUI {
     private transient int id;
