@@ -71,8 +71,8 @@ public class WindowView{
         rootNode.setTopAnchor(button, newY);
     }
 
-    //RadiantGUI
 
+    //RadiantGUI
     public RadiantGUI addRadiantGUI(ObservableList<Radiant> radiantsObservableList, double x, double y, int id) {
         RadiantGUI radiantGUI = addRadiantGUI(radiantsObservableList,x,y,id,radiantsObservableList.get(0));
         return radiantGUI;
@@ -85,7 +85,13 @@ public class WindowView{
         Label label;
         TextField textField;
         //Создание объекта
-        RadiantGUI radiantGUI = new RadiantGUI(radiantsObservableList, id, value);
+        RadiantGUI radiantGUI;
+        if (value instanceof RadiantGUILoad) {
+            radiantGUI = new RadiantGUI(radiantsObservableList, id, (RadiantGUILoad) value);
+        }
+        else {
+            radiantGUI = new RadiantGUI(radiantsObservableList, id, value);
+        }
         //Создание и расположение списка
         ComboBox<Radiant> radiantList = radiantGUI.getList();
         rootNode.getChildren().add(radiantList);
@@ -190,9 +196,7 @@ public class WindowView{
     }
 
 
-
     //ReceiverGUI
-
     public ReceiverGUI addReceiverGUI(ObservableList<Receiver> receiversObservableList, double x, double y, int id) {
         ReceiverGUI receiverGUI = addReceiverGUI(receiversObservableList,x,y,id,receiversObservableList.get(0));
         return receiverGUI;
@@ -205,7 +209,13 @@ public class WindowView{
         Label label;
         TextField textField;
         //Создание объекта
-        ReceiverGUI receiverGUI = new ReceiverGUI(receiversObservableList, id, value);
+        ReceiverGUI receiverGUI;
+        if (value instanceof ReceiverGUILoad) {
+            receiverGUI = new ReceiverGUI(receiversObservableList, id, (ReceiverGUILoad) value);
+        }
+        else {
+            receiverGUI = new ReceiverGUI(receiversObservableList, id, value);
+        }
         //Создание и расположение списка
         ComboBox<Receiver> receiverList = receiverGUI.getList();
         rootNode.getChildren().add(receiverList);

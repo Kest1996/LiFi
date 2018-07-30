@@ -25,6 +25,12 @@ public class RadiantGUI {
     private transient Label xL;
     private transient Label yL;
     private transient Label zL;
+    private String name;
+    private double iMax;
+    private double i;
+    private int x;
+    private int y;
+    private int z;
     RadiantGUI(ObservableList<Radiant> radiantsObservableList, int id) {
        this.id = id;
        //Выпадающий список
@@ -74,6 +80,13 @@ public class RadiantGUI {
     RadiantGUI(ObservableList<Radiant> radiantsObservableList, int id, Radiant value) {
         this(radiantsObservableList, id);
         this.radiantsList.setValue(value);
+    }
+    RadiantGUI(ObservableList<Radiant> radiantsObservableList, int id, RadiantGUILoad value) {
+        this(radiantsObservableList,id, (Radiant) value);
+        //Загрузка координат
+        xTF.setText(""+value.getX());
+        yTF.setText(""+value.getY());
+        zTF.setText(""+value.getZ());
     }
     public ComboBox<Radiant> getList() {
         return radiantsList;
@@ -138,6 +151,7 @@ public class RadiantGUI {
     public double getiMax() {
         return getObject().getiMax();
     }
+    //Редактирование + изменение библиотеки
     public void setObject(Radiant radiant, EditRadiantGUI EditWindow) {
         //Есть ли уже такой источник
         int check = checkAddList(radiant);
@@ -222,5 +236,15 @@ public class RadiantGUI {
             }
         }
         return false;
+    }
+
+    //Обновление объекта для сохранения
+    public void updateSaveObject() {
+        x = Integer.parseInt(xTF.getText());
+        y = Integer.parseInt(yTF.getText());
+        z = Integer.parseInt(zTF.getText());
+        iMax = getiMax();
+        i = getI();
+        name = getName();
     }
 }

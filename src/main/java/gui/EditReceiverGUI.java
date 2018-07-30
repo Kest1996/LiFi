@@ -11,7 +11,7 @@ import javafx.scene.control.Label;
 import javafx.stage.Modality;
 
 
-public class EditReceiverGUI extends EditGUI{
+public class EditReceiverGUI {
     private AnchorPane rootNodeChild = new AnchorPane();
     private Stage editReceiverWindow;
     private ReceiverGUI receiverGUI;

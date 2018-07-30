@@ -2,10 +2,10 @@ package radiation;
 
 public class Receiver {
     //для приемника нужны чувствительность, скорость отклика и энергия
-    private double sensitivity;
-    private double responseRate;
+    protected double sensitivity;
+    protected double responseRate;
     transient private double energy = 0;
-    private String name;
+    protected String name;
 
     public Receiver (String name,double sensitivity, double response_rate) {
         this.sensitivity = sensitivity;

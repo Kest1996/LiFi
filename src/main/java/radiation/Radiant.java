@@ -3,11 +3,11 @@ package radiation;
 public class Radiant {
 
     //интенсивность (вначале примем ее за постоянную величину во всех направлениях)
-    private double iMax;
+    protected double iMax;
 
-    private String name;
+    protected String name;
 
-    private double i;
+    protected double i;
 
     public Radiant(double iMax, String name) {
         this.iMax = iMax;

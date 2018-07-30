@@ -14,7 +14,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 
-public class ReceiverGUI extends EditGUI{
+public class ReceiverGUI {
     private transient int id;
     private transient ComboBox<Receiver> receiversList;
     private transient Button deleteButton;
@@ -25,6 +25,12 @@ public class ReceiverGUI extends EditGUI{
     private transient Label xL;
     private transient Label yL;
     private transient Label zL;
+    private String name;
+    private double sensetivity;
+    private double responseRate;
+    private int x;
+    private int y;
+    private int z;
     ReceiverGUI(ObservableList<Receiver> receiversObservableList, int id) {
         this.id = id;
         //Выпадающий список
@@ -74,6 +80,13 @@ public class ReceiverGUI extends EditGUI{
     ReceiverGUI(ObservableList<Receiver> receiversObservableList, int id, Receiver value) {
         this(receiversObservableList, id);
         this.receiversList.setValue(value);
+    }
+    ReceiverGUI(ObservableList<Receiver> receiversObservableList, int id, ReceiverGUILoad value) {
+        this(receiversObservableList, id, (Receiver) value);
+        //Загрузка координат
+        xTF.setText(""+value.getX());
+        yTF.setText(""+value.getY());
+        zTF.setText(""+value.getZ());
     }
     public ComboBox<Receiver> getList() {
         return receiversList;
@@ -223,5 +236,14 @@ public class ReceiverGUI extends EditGUI{
             }
         }
         return false;
+    }
+    //Обновление объекта для сохранения
+    public void updateSaveObject() {
+        x = Integer.parseInt(xTF.getText());
+        y = Integer.parseInt(yTF.getText());
+        z = Integer.parseInt(zTF.getText());
+        sensetivity = getSensitivity();
+        responseRate = getResponseRate();
+        name = getName();
     }
 }
