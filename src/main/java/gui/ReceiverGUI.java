@@ -246,4 +246,8 @@ public class ReceiverGUI {
         responseRate = getResponseRate();
         name = getName();
     }
+    //Преобразование координат для Hashmap
+    public String getCoords() {
+        return (x+"_"+y+"_"+z);
+    }
 }

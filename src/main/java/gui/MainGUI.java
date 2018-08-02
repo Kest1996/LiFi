@@ -25,6 +25,7 @@ import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.paint.Color;
 import loader.GLoader;
+import model.Model;
 import radiation.Radiant;
 import radiation.Receiver;
 import java.util.ArrayList;
@@ -85,10 +86,12 @@ public class MainGUI extends Application {
         rootNode.getChildren().addAll(menuBar);
         // Элементы меню
         Menu fileMenu = new Menu("Файл");
-        Menu addMenu = new Menu("Добавить");
+        Menu runMenu = new Menu("Запуск");
         Menu helpMenu = new Menu("Справка");
-        menuBar.getMenus().addAll(fileMenu, addMenu, helpMenu);
+        menuBar.getMenus().addAll(fileMenu, runMenu, helpMenu);
+
         // Подэлементы Файл
+
         //Создать новый
         MenuItem newFileMenu = new MenuItem("Новый");
         newFileMenu.setOnAction((ae) -> createFile());
@@ -103,13 +106,13 @@ public class MainGUI extends Application {
         saveAsFileMenu.setOnAction((ae) -> saveFileAs());
         //Выход
         MenuItem exitFileMenu = new MenuItem("Выход");
-        exitFileMenu.setOnAction((ae) -> System.exit(0));  //Реакция подэлемента меню
+        exitFileMenu.setOnAction((ae) -> System.exit(0));
         fileMenu.getItems().addAll(newFileMenu, openFileMenu, saveFileMenu, saveAsFileMenu, exitFileMenu);
-        // Подэлементы Добавить
-        MenuItem radiantAddMenu = new MenuItem("Источник");
-        MenuItem subjectAddMenu = new MenuItem("Объект");
-        MenuItem receiverAddMenu = new MenuItem("Приемник");
-        addMenu.getItems().addAll(radiantAddMenu, subjectAddMenu, receiverAddMenu);
+
+        // Подэлементы Запуск
+        MenuItem runRunMenu = new MenuItem("Запустить модель");
+        runRunMenu.setOnAction((ae) -> runModel());
+        runMenu.getItems().addAll(runRunMenu);
 
         // Разделяющие линии
         Line SeparatingLine1 = new Line(420, 50, 420, 1000);
@@ -137,6 +140,16 @@ public class MainGUI extends Application {
             ReceiverGUIList.add(LFWindow.addReceiverGUI(receiversObservableList, 440, 100 + ReceiverGUIList.size() * marginY, ReceiverGUIList.size()));
             rootNode.setTopAnchor(addReceiverButton, (double) (100 + ReceiverGUIList.size() * marginY));
         });
+    }
+
+    private void runModel() {
+        for (int i=0;i<RadiantGUIList.size();i++) {
+            RadiantGUIList.get(i).updateSaveObject();
+        }
+        for (int i=0;i<ReceiverGUIList.size();i++) {
+            ReceiverGUIList.get(i).updateSaveObject();
+        }
+        Model model = new Model("1", RadiantGUIList, ReceiverGUIList);
     }
 
     //Открытие файла
