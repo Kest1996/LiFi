@@ -149,6 +149,7 @@ public class MainGUI extends Application {
         for (int i=0;i<ReceiverGUIList.size();i++) {
             ReceiverGUIList.get(i).updateSaveObject();
         }
+
         Model model = new Model("1", RadiantGUIList, ReceiverGUIList);
     }
 

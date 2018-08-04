@@ -14,38 +14,27 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-public class ReceiverModel {
+public class ReceiverModel extends GuiModel {
     private double sensetivity;
     private double responseRate;
     private String name;
-    private int x;
-    private int y;
-    private int z;
     private transient ImageView imgv;
-    private transient String img = "img/priemnik.png";
     private transient Map<String, Double> coefficients = new HashMap<>();
+    ReceiverModel() {
+        img = "img\\receiver.jpg";
+    }
     ReceiverModel(ReceiverGUI receiverGUI) {
+        this();
         Image imgo = new Image(img);
         imgv = new ImageView(imgo);
         this.sensetivity = receiverGUI.getSensitivity();
         this.responseRate = receiverGUI.getResponseRate();
         this.name = receiverGUI.getName();
     }
-    public int getX() {
-        return x;
-    }
-
-    public int getY() {
-        return y;
-    }
-
-    public int getZ() {
-        return z;
-    }
 
     public void getE(int minX, int maxX, int minY, int maxY, int minZ, int maxZ) {
         coefficients = new HashMap<>();
-        double delta = 0.05;
+        double delta = 1;
         double k = Math.PI/180; //коэффициент преобразования в градусы
         /*
         Set<Map.Entry<String, RadiantModel>> set1 = Model.Radiants.entrySet();
@@ -91,10 +80,15 @@ public class ReceiverModel {
             }
         }
         System.out.println("Коэффициенты:");
-        Set<Map.Entry<String, Double>> set = coefficients.entrySet();
-        for (Map.Entry<String, Double> me : set) {
-            System.out.print(me.getKey() + ": ");
-            System.out.println(me.getValue());
+        try {
+            Set<Map.Entry<String, Double>> set = coefficients.entrySet();
+            for (Map.Entry<String, Double> me : set) {
+                System.out.print(me.getKey() + ": ");
+                System.out.println(me.getValue());
+            }
+        }
+        catch (NullPointerException exc) {
+            System.out.println("Нет пересечений");
         }
     }
 
@@ -106,21 +100,6 @@ public class ReceiverModel {
             return false;
         }
         if ((currentZ <= minZ) || (currentZ > maxZ)) {
-            return false;
-        }
-        return true;
-    }
-    private boolean check1(int minX, int maxX, int minY, int maxY, int minZ, int maxZ,double currentX, double currentY, double currentZ){
-        if ((currentX <= minX) || (currentX > maxX)) {
-            System.out.println("Вышел по X");
-            return false;
-        }
-        if ((currentY <= minY) || (currentY > maxY)) {
-            System.out.println("Вышел по Y");
-            return false;
-        }
-        if ((currentZ <= minZ) || (currentZ > maxZ)) {
-            System.out.println("Вышел по Z");
             return false;
         }
         return true;
