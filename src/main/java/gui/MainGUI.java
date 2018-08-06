@@ -140,6 +140,7 @@ public class MainGUI extends Application {
         });
     }
 
+    //Запуск модели
     private void runModel() {
         for (int i=0;i<RadiantGUIList.size();i++) {
             RadiantGUIList.get(i).updateSaveObject();
@@ -242,14 +243,15 @@ public class MainGUI extends Application {
             System.out.println("I/O Error: " + exc);
         }
     }
+
     //Создание нового файла
     private void createFile() {
         clearALL();
         setDefaultView();
         OpenedFileName = null;
     }
-    //Диалог сохранения файла
 
+    //Диалог сохранения файла
     private String saveFileDialog(String path) {
         FileChooser fileChooser = new FileChooser();//Класс работы с диалогом выборки и сохранения
         fileChooser.setTitle("Сохранить файл");//Заголовок диалога
