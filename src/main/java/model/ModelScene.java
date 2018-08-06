@@ -42,7 +42,7 @@ public class ModelScene {
         });
         if (bazis.equals("XZ")) {
             //Установка базы
-            addImage("img\\base.jpg",0,0,width-10,height-50);
+            addImage("resources\\img\\base.jpg",0,0,width-10,height-50);
             Collections.sort(objects, GuiModel.COMPARE_BY_Y);
             for (int i=0; i<objects.size(); i++) {
                 addImage(objects.get(i),"XZ");
@@ -50,7 +50,7 @@ public class ModelScene {
         }
         if (bazis.equals("YZ")) {
             //Установка базы
-            addImage("img\\base.jpg",0,0,width-10,height-50);
+            addImage("resources\\img\\base.jpg",0,0,width-10,height-50);
             Collections.sort(objects, GuiModel.COMPARE_BY_X);
             for (int i=0; i<objects.size(); i++) {
                 addImage(objects.get(i),"YZ");

@@ -64,15 +64,13 @@ public class MainGUI extends Application {
         rootNode = LFWindow.getRootNode();
         LFStage.setScene(LFWindow.getScene());
         setDefaultView();
-        openFile("test.json", LFWindow);
+        openFile("resources\\saves\\test.json", LFWindow);
         LFStage.show();
     }
 
     //Очистка после открытия файла
     private void clearALL() {
-        while (rootNode.getChildren().size() > 0) {
-            rootNode.getChildren().remove(0);
-        }
+        rootNode.getChildren().removeAll(rootNode.getChildren());
         RadiantGUIList = new ArrayList<>();
         ReceiverGUIList = new ArrayList<>();
     }
@@ -162,7 +160,7 @@ public class MainGUI extends Application {
         //Чтение файла
         radiants = loader.GLoader.getRadiants(fileName);
         //Чтение библиотеки источников:
-        radiantsLibrary = GLoader.loadRadiantLibrary("Library\\Radiants");
+        radiantsLibrary = GLoader.loadRadiantLibrary("resources\\Library\\Radiants");
         radiantsObservableList = FXCollections.observableArrayList(radiantsLibrary);
         //Создание GUI источников
         for (int i = 0; i < radiants.size(); i++) {
@@ -174,7 +172,7 @@ public class MainGUI extends Application {
         //Чтение файла
         receivers = loader.GLoader.getReceivers(fileName);
         //Чтение библиотеки приемников:
-        receiversLibrary = GLoader.loadReceiverLibrary("Library\\Receivers");
+        receiversLibrary = GLoader.loadReceiverLibrary("resources\\Library\\Receivers");
         receiversObservableList = FXCollections.observableArrayList(receiversLibrary);
         //Создание GUI приемников
         for (int i = 0; i < receivers.size(); i++) {

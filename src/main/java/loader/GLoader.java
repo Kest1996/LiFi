@@ -58,7 +58,7 @@ public class GLoader {
         return arrayList;
     }
     public static ArrayList<Radiant> loadRadiantLibrary() {
-        return loadRadiantLibrary("Library\\Radiants");
+        return loadRadiantLibrary("resources\\Library\\Radiants");
     }
     //Загрузка библиотеки приемников
     public static ArrayList<Receiver> loadReceiverLibrary(String path) {
@@ -79,12 +79,12 @@ public class GLoader {
         return arrayList;
     }
     public static ArrayList<Receiver> loadReceiverLibrary() {
-        return loadReceiverLibrary("Library\\Receivers");
+        return loadReceiverLibrary("resources\\Library\\Receivers");
     }
 
     //Функции записи источников
     public static void SaveNewRadiant(String fileName, Radiant radiant) {
-        SaveNewRadiant("Library\\Radiants", fileName, radiant);
+        SaveNewRadiant("resources\\Library\\Radiants", fileName, radiant);
     }
     public static void SaveNewRadiant(String path, String fileName, Radiant radiant) {
         Gson gsonObject = new GsonBuilder().create();
@@ -101,12 +101,12 @@ public class GLoader {
         SaveNewRadiant(path, fileName, radiant);
     }
     public static void RewriteRadiant(String fileName, Radiant radiant) {
-        RewriteRadiant("Library\\Radiants", fileName, radiant);
+        RewriteRadiant("resources\\Library\\Radiants", fileName, radiant);
     }
 
     //Функции записи приемников
     public static void SaveNewReceiver(String fileName, Receiver receiver) {
-        SaveNewReceiver("Library\\Receivers", fileName, receiver);
+        SaveNewReceiver("resources\\Library\\Receivers", fileName, receiver);
     }
     public static void SaveNewReceiver(String path, String fileName, Receiver receiver) {
         Gson gsonObject = new GsonBuilder().create();
@@ -123,6 +123,6 @@ public class GLoader {
         SaveNewReceiver(path, fileName, receiver);
     }
     public static void RewriteReceiver(String fileName, Receiver receiver) {
-        RewriteReceiver("Library\\Receivers", fileName, receiver);
+        RewriteReceiver("resources\\Library\\Receivers", fileName, receiver);
     }
 }

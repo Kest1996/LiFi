@@ -21,7 +21,7 @@ public class ReceiverModel extends GuiModel {
     private transient ImageView imgv;
     private transient Map<String, Double> coefficients = new HashMap<>();
     ReceiverModel() {
-        img = "img\\receiver.jpg";
+        img = "resources\\img\\receiver.jpg";
     }
     ReceiverModel(ReceiverGUI receiverGUI) {
         this();

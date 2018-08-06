@@ -13,7 +13,7 @@ public class RadiantModel extends GuiModel {
     private double i;
     private transient ImageView imgv;
     RadiantModel(){
-        img = "img\\radiant.jpg";
+        img = "resources\\img\\radiant.jpg";
     }
     public double getE(double phi, double teta) {
         double Emax = 1000;
