@@ -29,7 +29,6 @@ public class Model{
             coefMap.add(Receivers.get(i).getE(objs));
         }
 
-        System.out.println("\n\n\n"+coefMap);
         //Перевод источников и приемников в массив для отображения
         ArrayList<GuiModel> objects = new ArrayList<>();
         for (int i = 0; i<Radiants.size();i++) {

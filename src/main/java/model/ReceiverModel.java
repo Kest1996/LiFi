@@ -54,11 +54,12 @@ public class ReceiverModel extends GuiModel {
             if (objs.get(i) instanceof RadiantModel) {
                 String str = (objs.get(i).getX()+"_"+objs.get(i).getY()+"_"+objs.get(i).getZ());
                 coefficients.put(str, ((RadiantModel) objs.get(i)).getE(phi,teta));
-                System.out.println(str+"\tr = "+r+"\tphi = "+phi+"\tteta = "+teta);
+                //System.out.println(str+"\tr = "+r+"\tphi = "+phi+"\tteta = "+teta);
                 //Мапа для последующей передачи данных в гуи
                 result.put(str,new ReceiverCoefData(r, phi, teta, k));
             }
         }
+        /*
         System.out.println("Коэффициенты:");
         try {
             Set<Map.Entry<String, Double>> set = coefficients.entrySet();
@@ -70,6 +71,7 @@ public class ReceiverModel extends GuiModel {
         catch (NullPointerException exc) {
             System.out.println("Нет пересечений");
         }
+        */
         return result;
     }
     private double getR(GuiModel guiModel1, GuiModel guiModel2) {
