@@ -64,8 +64,9 @@ public class MainGUI extends Application {
         rootNode = LFWindow.getRootNode();
         LFStage.setScene(LFWindow.getScene());
         setDefaultView();
-        openFile("resources\\saves\\test.json", LFWindow);
+        //openFile("resources\\saves\\test.json", LFWindow);
         LFStage.show();
+        LFStage.setMaximized(true);
     }
 
     //Очистка после открытия файла

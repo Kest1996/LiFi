@@ -55,5 +55,6 @@ public class Model{
         ModelGUI.setScene(sceneXZ.getScene());
 
         ModelGUI.show();
+        ModelGUI.setMaximized(true);
     }
 }
