@@ -41,7 +41,6 @@ public class ReceiverModel extends GuiModel {
     }
 
     public HashMap<String, ReceiverCoefData> getE(ArrayList<GuiModel> objs) {
-        System.out.println("\n\nПриемник "+getX()+"_"+getY()+"_"+getZ());
         //Мапа для последующей передачи данных в гуи
         HashMap<String, ReceiverCoefData> result = new HashMap<>();
         coefficients = new HashMap<>();
