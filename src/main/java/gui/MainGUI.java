@@ -113,18 +113,26 @@ public class MainGUI extends Application {
         runMenu.getItems().addAll(runRunMenu);
 
         // Разделяющие линии
-        Line SeparatingLine1 = new Line(420, 50, 420, 1000);
+        Line SeparatingLine1 = new Line(420, 50, 420, LFWindow.getScene().getHeight());
         SeparatingLine1.setStrokeWidth(10);
         SeparatingLine1.setStroke(Color.BLACK);
         rootNode.getChildren().addAll(SeparatingLine1);
-        Line SeparatingLine2 = new Line(840, 50, 840, 1000);
+        Line SeparatingLine2 = new Line(840, 50, 840, LFWindow.getScene().getHeight());
         SeparatingLine2.setStrokeWidth(10);
         SeparatingLine2.setStroke(Color.BLACK);
         rootNode.getChildren().addAll(SeparatingLine2);
 
         //Надписи
         LFWindow.addLabel("Источники:", 100, 70, 20);
-        LFWindow.addLabel("Приемники:", 520, 70, 20);
+        LFWindow.addLabel("Приемники:", 930, 70, 20);
+
+        //Чтение библиотеки источников:
+        radiantsLibrary = GLoader.loadRadiantLibrary("resources\\Library\\Radiants");
+        radiantsObservableList = FXCollections.observableArrayList(radiantsLibrary);
+
+        //Чтение библиотеки приемников:
+        receiversLibrary = GLoader.loadReceiverLibrary("resources\\Library\\Receivers");
+        receiversObservableList = FXCollections.observableArrayList(receiversLibrary);
 
         //Создание кнопки для добавления источников
         addRadiantButton = LFWindow.addButton("Добавить", 50, 100 + RadiantGUIList.size() * marginY);
@@ -133,23 +141,17 @@ public class MainGUI extends Application {
             rootNode.setTopAnchor(addRadiantButton, (double) (100 + RadiantGUIList.size() * marginY));
         });
         //Создание кнопки для добавления приемников
-        addReceiverButton = LFWindow.addButton("Добавить", 440, 100 + ReceiverGUIList.size() * marginY);
+        addReceiverButton = LFWindow.addButton("Добавить", 880, 100 + ReceiverGUIList.size() * marginY);
         addReceiverButton.setOnAction((ae) -> {
-            ReceiverGUIList.add(LFWindow.addReceiverGUI(receiversObservableList, 440, 100 + ReceiverGUIList.size() * marginY, ReceiverGUIList.size()));
+            ReceiverGUIList.add(LFWindow.addReceiverGUI(receiversObservableList, 880, 100 + ReceiverGUIList.size() * marginY, ReceiverGUIList.size()));
             rootNode.setTopAnchor(addReceiverButton, (double) (100 + ReceiverGUIList.size() * marginY));
         });
     }
 
     //Запуск модели
     private void runModel() {
-        for (int i=0;i<RadiantGUIList.size();i++) {
-            RadiantGUIList.get(i).updateSaveObject();
-        }
-        for (int i=0;i<ReceiverGUIList.size();i++) {
-            ReceiverGUIList.get(i).updateSaveObject();
-        }
-
-        Model model = new Model("1", RadiantGUIList, ReceiverGUIList);
+        saveFile("resources\\saves\\temporary_saved_model.json");
+        Model model = new Model("1","resources\\saves\\temporary_saved_model.json");
     }
 
     //Открытие файла
@@ -160,9 +162,6 @@ public class MainGUI extends Application {
         //Вывод источников:
         //Чтение файла
         radiants = loader.GLoader.getRadiants(fileName);
-        //Чтение библиотеки источников:
-        radiantsLibrary = GLoader.loadRadiantLibrary("resources\\Library\\Radiants");
-        radiantsObservableList = FXCollections.observableArrayList(radiantsLibrary);
         //Создание GUI источников
         for (int i = 0; i < radiants.size(); i++) {
             RadiantGUIList.add(window.addRadiantGUI(radiantsObservableList, 50, 100 + i * marginY, i, radiants.get(i)));
@@ -172,14 +171,11 @@ public class MainGUI extends Application {
         //Вывод приемников:
         //Чтение файла
         receivers = loader.GLoader.getReceivers(fileName);
-        //Чтение библиотеки приемников:
-        receiversLibrary = GLoader.loadReceiverLibrary("resources\\Library\\Receivers");
-        receiversObservableList = FXCollections.observableArrayList(receiversLibrary);
         //Создание GUI приемников
         for (int i = 0; i < receivers.size(); i++) {
-            ReceiverGUIList.add(window.addReceiverGUI(receiversObservableList, 440, 100 + i * marginY, i, receivers.get(i)));
+            ReceiverGUIList.add(window.addReceiverGUI(receiversObservableList, 880, 100 + i * marginY, i, receivers.get(i)));
         }
-        LFWindow.moveButton(addReceiverButton, 440, 100 + ReceiverGUIList.size() * marginY);
+        LFWindow.moveButton(addReceiverButton, 880, 100 + ReceiverGUIList.size() * marginY);
     }
 
     private void openFile(WindowView window) {

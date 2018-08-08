@@ -26,12 +26,17 @@ public class WindowView{
     private int sizeX, sizeY;
     private AnchorPane rootNode;
     private Scene scene;
+    private ScrollPane scrollPane;
     WindowView(int sizeX, int sizeY) {
-        //this.name = name;
         this.sizeX = sizeX;
         this.sizeY = sizeY;
         this.rootNode = new AnchorPane();
-        this.scene = new Scene(rootNode, sizeX, sizeY);
+        //this.scene = new Scene(rootNode, sizeX, sizeY);
+        // ScrollPane
+        this.scrollPane = new ScrollPane();
+        scrollPane.setContent(rootNode);
+        scrollPane.setPannable(true);
+        this.scene = new Scene(scrollPane, sizeX, sizeY);
     }
     public Scene getScene() {
         return scene;

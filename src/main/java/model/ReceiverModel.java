@@ -3,6 +3,7 @@ package model;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import gui.RadiantGUI;
+import gui.ReceiverCoefData;
 import gui.ReceiverGUI;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -14,6 +15,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+import static java.lang.Math.abs;
+import static java.lang.Math.acos;
+import static java.lang.Math.sqrt;
+
 public class ReceiverModel extends GuiModel {
     private double sensetivity;
     private double responseRate;
@@ -22,6 +27,9 @@ public class ReceiverModel extends GuiModel {
     private transient Map<String, Double> coefficients = new HashMap<>();
     ReceiverModel() {
         img = "resources\\img\\receiver.jpg";
+        sizeX = 0;
+        sizeY = 0;
+        sizeZ = 0;
     }
     ReceiverModel(ReceiverGUI receiverGUI) {
         this();
@@ -32,51 +40,23 @@ public class ReceiverModel extends GuiModel {
         this.name = receiverGUI.getName();
     }
 
-    public void getE(int minX, int maxX, int minY, int maxY, int minZ, int maxZ) {
+    public HashMap<String, ReceiverCoefData> getE(ArrayList<GuiModel> objs) {
+        System.out.println("\n\nПриемник "+getX()+"_"+getY()+"_"+getZ());
+        //Мапа для последующей передачи данных в гуи
+        HashMap<String, ReceiverCoefData> result = new HashMap<>();
         coefficients = new HashMap<>();
-        double delta = 1;
         double k = Math.PI/180; //коэффициент преобразования в градусы
-        /*
-        Set<Map.Entry<String, RadiantModel>> set1 = Model.Radiants.entrySet();
-        for (Map.Entry<String, RadiantModel> me : set1) {
-            System.out.print(me.getKey() + ": ");
-            System.out.println(me.getValue());
-        }
-        */
-        for (double teta = 0; teta < 180*k; teta = (teta/k + delta)*k) {
-            String str;
-            for (double phi = 0; phi < (360*k); phi = (phi/k + delta)*k) {
-                double currentX = x;
-                double currentY = y;
-                double currentZ = z;
-                boolean checker = true;
-                double dX = Math.sin(teta)*Math.cos(phi);
-                double dY = Math.sin(teta)*Math.sin(phi);
-                double dZ = Math.cos(teta);
-                //Обход направления
-                while (checker) {
-                    //Увеличение координат
-                    currentX += dX;
-                    currentY += dY;
-                    currentZ -= dZ;
-                    str = ((int) currentX+"_"+(int)currentY+"_"+(int)currentZ);
-                    if (Model.Radiants.get(str)!=null) {
-                        if (coefficients.get(str)!=null) {
-                            coefficients.put(str,(coefficients.get(str)+Model.Radiants.get(str).getE(phi,teta)));
-                        }
-                        else {
-                            coefficients.put(str,Model.Radiants.get(str).getE(phi,teta));
-                        }
-                        checker = false;
-                    }
-                    else {
-                        //Проверка выхода за границы
-                        checker = check(minX, maxX, minY, maxY, minZ, maxZ, currentX, currentY, currentZ);
-                    }
-                }
-                if (((Double)teta).equals(0.0)) {
-                    break;
-                }
+        for (int i=0; i<objs.size(); i++) {
+            //расстояние между левыми точками
+            double r = getR(this, objs.get(i));
+            double phi = Math.atan2((objs.get(i).getY()-y),(objs.get(i).getX()-x))/k;
+            double teta = acos((objs.get(i).getZ()-z)/r)/k-90;
+            if (objs.get(i) instanceof RadiantModel) {
+                String str = (objs.get(i).getX()+"_"+objs.get(i).getY()+"_"+objs.get(i).getZ());
+                coefficients.put(str, ((RadiantModel) objs.get(i)).getE(phi,teta));
+                System.out.println(str+"\tr = "+r+"\tphi = "+phi+"\tteta = "+teta);
+                //Мапа для последующей передачи данных в гуи
+                result.put(str,new ReceiverCoefData(r, phi, teta, k));
             }
         }
         System.out.println("Коэффициенты:");
@@ -90,18 +70,30 @@ public class ReceiverModel extends GuiModel {
         catch (NullPointerException exc) {
             System.out.println("Нет пересечений");
         }
+        return result;
+    }
+    private double getR(GuiModel guiModel1, GuiModel guiModel2) {
+        return sqrt(sqr(guiModel1.getX()-guiModel2.getX())+sqr(guiModel1.getY()-guiModel2.getY())+sqr(guiModel1.getZ()-guiModel2.getZ()));
     }
 
-    private boolean check(int minX, int maxX, int minY, int maxY, int minZ, int maxZ,double currentX, double currentY, double currentZ){
-        if ((currentX <= minX) || (currentX > maxX)) {
-            return false;
-        }
-        if ((currentY <= minY) || (currentY > maxY)) {
-            return false;
-        }
-        if ((currentZ <= minZ) || (currentZ > maxZ)) {
-            return false;
-        }
-        return true;
+    public String toString(){
+        return ("Receiver "+getX()+"_"+getY()+"_"+getZ());
     }
+    /* МБ потом понадобится
+    private double getR(GuiModel guiModel1, GuiModel guiModel2, boolean r2){
+        return sqrt(getRx(guiModel1,guiModel2)+getRy(guiModel1,guiModel2)+getRz(guiModel1,guiModel2));
+    }
+    private double getRx(GuiModel guiModel1, GuiModel guiModel2){
+        return sqr(guiModel1.getX()+guiModel1.getSizeX()-guiModel2.getX()+guiModel2.getSizeX());
+    }
+    private double getRy(GuiModel guiModel1, GuiModel guiModel2){
+        return sqr(guiModel1.getY()+guiModel1.getSizeY()-guiModel2.getY()+guiModel2.getSizeY());
+    }
+    private double getRz(GuiModel guiModel1, GuiModel guiModel2){
+        return sqr(guiModel1.getZ()+guiModel1.getSizeZ()-guiModel2.getZ()+guiModel2.getSizeZ());
+    }
+     */
+
+    private double sqr(double n) {return n*n;}
+
 }

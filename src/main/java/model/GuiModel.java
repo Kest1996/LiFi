@@ -6,6 +6,9 @@ public class GuiModel {
     protected int x;
     protected int y;
     protected int z;
+    protected transient int sizeX;
+    protected transient int sizeY;
+    protected transient int sizeZ;
     protected transient String img;
     public int getX() {
         return x;
@@ -17,6 +20,18 @@ public class GuiModel {
 
     public int getZ() {
         return z;
+    }
+
+    public int getSizeX() {
+        return sizeX;
+    }
+
+    public int getSizeY() {
+        return sizeY;
+    }
+
+    public int getSizeZ() {
+        return sizeZ;
     }
 
     public String getImg(){
