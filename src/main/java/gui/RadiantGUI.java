@@ -75,9 +75,9 @@ public class RadiantGUI {
        });
        //Z
        zL = new Label("Z:");
-       editButton.setFont(MainGUI.defaultFont);
+       zL.setFont(MainGUI.defaultFont);
        zTF = new TextField("0");
-       editButton.setFont(MainGUI.defaultFont);
+       zTF.setFont(MainGUI.defaultFont);
        //Чтобы только целые числа
        zTF.textProperty().addListener((ae,oldValue,newValue)-> { {
            if ((!newValue.matches("\\d{1,1000}") || newValue.startsWith("00")) & !newValue.equals("")){
