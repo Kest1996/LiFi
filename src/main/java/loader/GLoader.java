@@ -44,9 +44,10 @@ public class GLoader {
         //Считывание всех файлов в папке
         File directory = new File(path);
         File[] arrayFiles = directory.listFiles();
+        System.out.println(arrayFiles);
         //Считывание файлов в формате json в ArrayList источников
         ArrayList<Radiant> arrayList= new ArrayList<>();
-        Gson gson = new GsonBuilder().create();
+        Gson gson = new Gson();
         for (int i=0;i<arrayFiles.length;i++) {
             try (FileReader jsonData = new FileReader(arrayFiles[i])) {
                 arrayList.add(gson.fromJson(jsonData, Radiant.class));
@@ -58,7 +59,7 @@ public class GLoader {
         return arrayList;
     }
     public static ArrayList<Radiant> loadRadiantLibrary() {
-        return loadRadiantLibrary("resources\\Library\\Radiants");
+        return loadRadiantLibrary("resources/Library/Radiants");
     }
     //Загрузка библиотеки приемников
     public static ArrayList<Receiver> loadReceiverLibrary(String path) {
