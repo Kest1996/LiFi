@@ -86,6 +86,7 @@ public class EditReceiverGUI {
     }
     Button addButton(String defaultText, double x, double y) {
         Button button = new Button(defaultText);
+        button.setFont(MainGUI.defaultFont);
         rootNodeChild.getChildren().add(button);
         rootNodeChild.setLeftAnchor(button, x);
         rootNodeChild.setTopAnchor(button, y);
@@ -93,6 +94,7 @@ public class EditReceiverGUI {
     }
     Label addLabel(String text, double x, double y){
         Label label = new Label(text);
+        label.setFont(MainGUI.defaultFont);
         rootNodeChild.getChildren().add(label);
         rootNodeChild.setLeftAnchor(label, x);
         rootNodeChild.setTopAnchor(label, y);
@@ -100,6 +102,7 @@ public class EditReceiverGUI {
     }
     TextField addTextField(Object defaultText, double x, double y){
         TextField textField = new TextField(defaultText.toString());
+        textField.setFont(MainGUI.defaultFont);
         rootNodeChild.setLeftAnchor(textField, x);
         rootNodeChild.setTopAnchor(textField, y);
         rootNodeChild.getChildren().add(textField);

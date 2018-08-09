@@ -19,6 +19,7 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Line;
+import javafx.scene.text.Font;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.application.Application;
@@ -32,6 +33,7 @@ import java.util.ArrayList;
 
 public class MainGUI extends Application {
     private String OpenedFileName = null;
+    public static Font defaultFont = new Font("Arial",11.2);
 
     private static AnchorPane rootNode;
     public static WindowView LFWindow;

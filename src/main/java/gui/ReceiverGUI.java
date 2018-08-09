@@ -42,13 +42,17 @@ public class ReceiverGUI {
        */
         //Кнопка для удаления
         deleteButton = new Button("Удалить");
+        deleteButton.setFont(MainGUI.defaultFont);
         deleteButton.setOnAction(this::DeleteButtonReact);
         //Кнопка для редактирования
         editButton = new Button("Редактировать");
+        editButton.setFont(MainGUI.defaultFont);
         editButton.setOnAction(this::EditButtonReact);
         //X
         xL = new Label("X:");
+        xL.setFont(MainGUI.defaultFont);
         xTF = new TextField("0");
+        xTF.setFont(MainGUI.defaultFont);
         //Чтобы только целые числа
         xTF.textProperty().addListener((ae,oldValue,newValue)-> { {
             if ((!newValue.matches("\\d{1,1000}") || newValue.startsWith("00")) & !newValue.equals("")) {
@@ -58,7 +62,9 @@ public class ReceiverGUI {
         });
         //Y
         yL = new Label("Y:");
+        yL.setFont(MainGUI.defaultFont);
         yTF = new TextField("0");
+        yTF.setFont(MainGUI.defaultFont);
         //Чтобы только целые числа
         yTF.textProperty().addListener((ae,oldValue,newValue)-> { {
             if ((!newValue.matches("\\d{1,1000}") || newValue.startsWith("00")) & !newValue.equals("")){
@@ -68,7 +74,9 @@ public class ReceiverGUI {
         });
         //Z
         zL = new Label("Z:");
+        zL.setFont(MainGUI.defaultFont);
         zTF = new TextField("0");
+        zTF.setFont(MainGUI.defaultFont);
         //Чтобы только целые числа
         zTF.textProperty().addListener((ae,oldValue,newValue)-> { {
             if ((!newValue.matches("\\d{1,1000}") || newValue.startsWith("00")) & !newValue.equals("")){
@@ -186,11 +194,13 @@ public class ReceiverGUI {
         else {
             label = new Label("Сохранить "+receiver+" в библиотеке?");
         }
+        label.setFont(MainGUI.defaultFont);
         rootNodeChild2.getChildren().add(label);
         rootNodeChild2.setLeftAnchor(label, 10.0);
         rootNodeChild2.setTopAnchor(label, 10.0);
         //Кнопка ДА
         Button yesButton = new Button("Да");
+        yesButton.setFont(MainGUI.defaultFont);
         rootNodeChild2.getChildren().add(yesButton);
         rootNodeChild2.setLeftAnchor(yesButton, 10.0);
         rootNodeChild2.setTopAnchor(yesButton, 50.0);
@@ -206,6 +216,7 @@ public class ReceiverGUI {
         });
         //Кнопка НЕТ
         Button noButton = new Button("Нет");
+        noButton.setFont(MainGUI.defaultFont);
         rootNodeChild2.getChildren().add(noButton);
         rootNodeChild2.setLeftAnchor(noButton, 110.0);
         rootNodeChild2.setTopAnchor(noButton, 50.0);

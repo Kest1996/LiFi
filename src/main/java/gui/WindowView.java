@@ -105,7 +105,6 @@ public class WindowView{
         radiantList.setPrefWidth(150);
         //Создание и расположение кнопки для редактирования
         Button radiantEditButton = radiantGUI.getEditButton();
-        radiantEditButton.setFont(new Font("Arial",11.2));
         rootNode.getChildren().add(radiantEditButton);
         rootNode.setLeftAnchor(radiantEditButton, x+marginX);
         rootNode.setTopAnchor(radiantEditButton, y);

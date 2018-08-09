@@ -1,5 +1,6 @@
 package model;
 
+import gui.MainGUI;
 import gui.ReceiverCoefData;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -150,6 +151,7 @@ public class ModelScene {
     }
     private Label addLabel(String text, double x, double y){
         Label label = new Label(text);
+        label.setFont(MainGUI.defaultFont);
         rootNodeChild.getChildren().add(label);
         rootNodeChild.setLeftAnchor(label, x);
         rootNodeChild.setTopAnchor(label, y);
