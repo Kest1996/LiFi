@@ -1,0 +1,4 @@
+{
+  "Radiants": [{"name":"r3","iMax":1000.0,"i":5.0,"x":0,"y":0,"z":0},{"name":"r3","iMax":1000.0,"i":5.0,"x":0,"y":0,"z":0},{"name":"r3","iMax":1000.0,"i":5.0,"x":0,"y":0,"z":0}],
+  "Receivers": [{"name":"rec1","sensetivity":0.0,"responseRate":100.0,"x":0,"y":0,"z":0},{"name":"rec1","sensetivity":0.0,"responseRate":100.0,"x":189,"y":0,"z":0},{"name":"rec1","sensetivity":0.0,"responseRate":100.0,"x":0,"y":0,"z":0}]
+}
