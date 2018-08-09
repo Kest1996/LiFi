@@ -128,11 +128,11 @@ public class MainGUI extends Application {
         LFWindow.addLabel("Приемники:", 930, 70, 20);
 
         //Чтение библиотеки источников:
-        radiantsLibrary = GLoader.loadRadiantLibrary("resources\\Library\\Radiants");
+        radiantsLibrary = GLoader.loadRadiantLibrary("src/main/resources/Library/Radiants");
         radiantsObservableList = FXCollections.observableArrayList(radiantsLibrary);
 
         //Чтение библиотеки приемников:
-        receiversLibrary = GLoader.loadReceiverLibrary("resources\\Library\\Receivers");
+        receiversLibrary = GLoader.loadReceiverLibrary("src/main/resources/Library/Receivers");
         receiversObservableList = FXCollections.observableArrayList(receiversLibrary);
 
         //Создание кнопки для добавления источников
