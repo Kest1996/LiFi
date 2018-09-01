@@ -37,6 +37,10 @@ public class Receiver {
         return name;
     }
 
+    public void addEnergy(double energy) {
+        this.energy += energy;
+    }
+
     @Override
     public String toString() {
         return name;
