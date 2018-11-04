@@ -26,7 +26,7 @@ public class LightOperations {
                 //Проброска исключения
                 //Добавить в функционал получения объекта по стринге координат
                 new Throwable();
-                receiverPlane.getObject(0, 0).addEnergy(radiantPlane.getObject(0, 0).getI());
+                receiverPlane.getObject(0, 0).addEnergy(radiantPlane.getObject(0, 0).getFe());
             }
         }
     }

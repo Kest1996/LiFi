@@ -7,7 +7,7 @@ public class RadiantGUILoad extends Radiant {
     private int y;
     private int z;
     RadiantGUILoad(Radiant radiant, int x, int y, int z) {
-        super(radiant.getiMax(),radiant.getName(),radiant.getI());
+        super(radiant.getFe(),radiant.getName(),radiant.getSpectrum());
         this.x = x;
         this.y = y;
         this.z = z;

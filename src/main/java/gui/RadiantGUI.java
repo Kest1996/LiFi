@@ -27,8 +27,8 @@ public class RadiantGUI {
     private transient Label yL;
     private transient Label zL;
     private String name;
-    private double iMax;
-    private double i;
+    private double Fe;
+    private String spectrum;
     private int x;
     private int y;
     private int z;
@@ -154,11 +154,11 @@ public class RadiantGUI {
     public String getName() {
         return getObject().getName();
     }
-    public double getI() {
-        return getObject().getI();
+    public double getFe() {
+        return getObject().getFe();
     }
-    public double getiMax() {
-        return getObject().getiMax();
+    public String getSpectrum() {
+        return getObject().getSpectrum();
     }
     //Редактирование + изменение библиотеки
     public void setObject(Radiant radiant, EditRadiantGUI EditWindow) {
@@ -255,8 +255,8 @@ public class RadiantGUI {
         x = Integer.parseInt(xTF.getText());
         y = Integer.parseInt(yTF.getText());
         z = Integer.parseInt(zTF.getText());
-        iMax = getiMax();
-        i = getI();
+        Fe = getFe();
+        spectrum = getSpectrum();
         name = getName();
     }
 

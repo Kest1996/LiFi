@@ -26,8 +26,7 @@ public class ReceiverGUI {
     private transient Label yL;
     private transient Label zL;
     private String name;
-    private double sensetivity;
-    private double responseRate;
+    private String sensitivity;
     private int x;
     private int y;
     private int z;
@@ -153,10 +152,7 @@ public class ReceiverGUI {
     public String getName() {
         return getObject().getName();
     }
-    public double getResponseRate() {
-        return getObject().getResponseRate();
-    }
-    public double getSensitivity() {
+    public String getSensitivity() {
         return getObject().getSensitivity();
     }
     //Обработка редактирования
@@ -253,8 +249,7 @@ public class ReceiverGUI {
         x = Integer.parseInt(xTF.getText());
         y = Integer.parseInt(yTF.getText());
         z = Integer.parseInt(zTF.getText());
-        sensetivity = getSensitivity();
-        responseRate = getResponseRate();
+        sensitivity = getSensitivity();
         name = getName();
     }
     //Преобразование координат для Hashmap

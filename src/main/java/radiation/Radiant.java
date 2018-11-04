@@ -2,29 +2,28 @@ package radiation;
 
 public class Radiant {
 
-    //интенсивность (вначале примем ее за постоянную величину во всех направлениях)
-    protected double iMax;
+    protected double Fe;
 
     protected String name;
 
-    protected double i;
+    protected String spectrum;
 
-    public Radiant(double iMax, String name) {
-        this.iMax = iMax;
+    public Radiant(double Fe, String name) {
+        this.Fe = Fe;
         this.name = name;
     }
-    public Radiant(double iMax, String name, double i) {
-        this.iMax = iMax;
+    public Radiant(double Fe, String name, String spectrum) {
+        this.Fe = Fe;
         this.name = name;
-        this.i = i;
+        this.spectrum = spectrum;
     }
 
-    public double getiMax() {
-        return iMax;
+    public double getFe() {
+        return Fe;
     }
 
-    public void setiMax(double iMax) {
-        this.iMax = iMax;
+    public void setFe(double Fe) {
+        this.Fe = Fe;
     }
 
     public String getName() {
@@ -35,14 +34,12 @@ public class Radiant {
         this.name = name;
     }
 
-    //Потоковое изменение свечения светодиода
-    public void luminescence(double i) {
-        this.i = iMax * i;
+    public String getSpectrum() {
+        return spectrum;
     }
 
-    //получение свечения светодиода
-    public double getI() {
-        return i;
+    public void setSpectrum(String spectrum) {
+        this.spectrum = spectrum;
     }
 
     //Автоматическое преобразование в строку

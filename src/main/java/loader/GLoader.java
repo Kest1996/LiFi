@@ -44,7 +44,6 @@ public class GLoader {
         //Считывание всех файлов в папке
         File directory = new File(path);
         File[] arrayFiles = directory.listFiles();
-        System.out.println(arrayFiles);
         //Считывание файлов в формате json в ArrayList источников
         ArrayList<Radiant> arrayList= new ArrayList<>();
         Gson gson = new Gson();
@@ -59,7 +58,7 @@ public class GLoader {
         return arrayList;
     }
     public static ArrayList<Radiant> loadRadiantLibrary() {
-        return loadRadiantLibrary("resources/Library/Radiants");
+        return loadRadiantLibrary("src\\main\\resources/Library/Radiants");
     }
     //Загрузка библиотеки приемников
     public static ArrayList<Receiver> loadReceiverLibrary(String path) {
@@ -80,12 +79,12 @@ public class GLoader {
         return arrayList;
     }
     public static ArrayList<Receiver> loadReceiverLibrary() {
-        return loadReceiverLibrary("resources\\Library\\Receivers");
+        return loadReceiverLibrary("src\\main\\resources\\Library\\Receivers");
     }
 
     //Функции записи источников
     public static void SaveNewRadiant(String fileName, Radiant radiant) {
-        SaveNewRadiant("resources\\Library\\Radiants", fileName, radiant);
+        SaveNewRadiant("src\\main\\resources\\Library\\Radiants", fileName, radiant);
     }
     public static void SaveNewRadiant(String path, String fileName, Radiant radiant) {
         Gson gsonObject = new GsonBuilder().create();
@@ -102,12 +101,12 @@ public class GLoader {
         SaveNewRadiant(path, fileName, radiant);
     }
     public static void RewriteRadiant(String fileName, Radiant radiant) {
-        RewriteRadiant("resources\\Library\\Radiants", fileName, radiant);
+        RewriteRadiant("src\\main\\resources\\Library\\Radiants", fileName, radiant);
     }
 
     //Функции записи приемников
     public static void SaveNewReceiver(String fileName, Receiver receiver) {
-        SaveNewReceiver("resources\\Library\\Receivers", fileName, receiver);
+        SaveNewReceiver("src\\main\\resources\\Library\\Receivers", fileName, receiver);
     }
     public static void SaveNewReceiver(String path, String fileName, Receiver receiver) {
         Gson gsonObject = new GsonBuilder().create();
@@ -124,6 +123,6 @@ public class GLoader {
         SaveNewReceiver(path, fileName, receiver);
     }
     public static void RewriteReceiver(String fileName, Receiver receiver) {
-        RewriteReceiver("resources\\Library\\Receivers", fileName, receiver);
+        RewriteReceiver("src\\main\\resources\\Library\\Receivers", fileName, receiver);
     }
 }

@@ -4,11 +4,14 @@ import javafx.scene.control.*;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import radiation.Diagram;
 import radiation.Receiver;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.stage.Modality;
+
+import static gui.MainGUI.receiverDiagramsObservableList;
 
 
 public class EditReceiverGUI {
@@ -16,8 +19,8 @@ public class EditReceiverGUI {
     private Stage editReceiverWindow;
     private ReceiverGUI receiverGUI;
     private TextField nameTF;
-    private TextField sensetivityTF;
-    private TextField responseRateTF;
+    private ComboBox<Diagram> sensetivityList = new ComboBox<>();
+
     EditReceiverGUI(ReceiverGUI receiverGUI, int id) {
         //Создание базы окна
         this.receiverGUI = receiverGUI;
@@ -38,24 +41,16 @@ public class EditReceiverGUI {
         int startX = 20;
         int startY = 20;
         //name
-        Label label = addLabel("name",startX,startY);
+        Label label = addLabel("Имя",startX,startY);
         nameTF = addTextField(receiverGUI.getName(),startX+marginX,startY);
-        //iMax
-        label = addLabel("sensetivity",startX,startY+marginY);
-        sensetivityTF = addTextField(receiverGUI.getSensitivity(),startX+marginX,startY+marginY);
-        sensetivityTF.textProperty().addListener((ae, oldValue, newValue)-> {
-            if (!checkDecimal(newValue)) {
-                sensetivityTF.setText(oldValue);
-            }
-        });
-        //i
-        label = addLabel("responseRate",startX,startY+marginY+marginY);
-        responseRateTF = addTextField(receiverGUI.getResponseRate(),startX+marginX,startY+marginY+marginY);
-        responseRateTF.textProperty().addListener((ae, oldValue, newValue)-> {
-            if (!checkDecimal(newValue)) {
-                responseRateTF.setText(oldValue);
-            }
-        });
+        //sensetivity
+        label = addLabel("Чувствительность",startX,startY+marginY);
+        sensetivityList = new ComboBox<>(receiverDiagramsObservableList);
+        rootNodeChild.getChildren().add(sensetivityList);
+        rootNodeChild.setLeftAnchor(sensetivityList, (double) startX+marginX);
+        rootNodeChild.setTopAnchor(sensetivityList, (double) startY+marginY);
+        sensetivityList.getSelectionModel().select(getDiagInit(receiverGUI.getSensitivity()));
+
         //Кнопки
         //OK
         Button okButton = addButton("OK", 20,250);
@@ -75,7 +70,7 @@ public class EditReceiverGUI {
         return true;
     }
     private void okButtonReact(ActionEvent ae) {
-        Receiver receiver = new Receiver(nameTF.getText(),Double.parseDouble(sensetivityTF.getText()),Double.parseDouble(responseRateTF.getText()));
+        Receiver receiver = new Receiver(nameTF.getText(),sensetivityList.getValue().toString());
         receiverGUI.setObject(receiver,this);
     }
     private void cancelButtonReact(ActionEvent ae) {
@@ -107,5 +102,14 @@ public class EditReceiverGUI {
         rootNodeChild.setTopAnchor(textField, y);
         rootNodeChild.getChildren().add(textField);
         return textField;
+    }
+
+    private int getDiagInit(String diagName){
+        for (int i=0;i<receiverDiagramsObservableList.size();i++) {
+            if (diagName.equals(receiverDiagramsObservableList.get(i).getName())) {
+                return i;
+            }
+        }
+        return 0;
     }
 }

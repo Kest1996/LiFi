@@ -27,6 +27,7 @@ import javafx.geometry.Insets;
 import javafx.scene.paint.Color;
 import loader.GLoader;
 import model.Model;
+import radiation.Diagram;
 import radiation.Radiant;
 import radiation.Receiver;
 import java.util.ArrayList;
@@ -50,6 +51,14 @@ public class MainGUI extends Application {
     private static ObservableList<Receiver> receiversObservableList;
     public static ArrayList<ReceiverGUI> ReceiverGUIList = new ArrayList<>();
     private static Button addReceiverButton;
+
+
+    private static ArrayList<Diagram> radiantDiagrams = new ArrayList<>();
+    public static ObservableList<Diagram> radiantDiagramsObservableList;
+
+    private static ArrayList<Diagram> receiverDiagrams = new ArrayList<>();
+    public static ObservableList<Diagram> receiverDiagramsObservableList;
+
 
     int marginY = 60;
 
@@ -136,6 +145,26 @@ public class MainGUI extends Application {
         //Чтение библиотеки приемников:
         receiversLibrary = GLoader.loadReceiverLibrary("src/main/resources/Library/Receivers");
         receiversObservableList = FXCollections.observableArrayList(receiversLibrary);
+
+
+        //Чтение библиотеки спектров источников
+        File directory = new File("src/main/resources/Library/RadiantDiagram");
+        File[] arrayFiles = directory.listFiles();
+        for (int i=0;i<=arrayFiles.length-1;i++){
+            radiantDiagrams.add(new Diagram(arrayFiles[i].getName().substring(0,arrayFiles[i].getName().length()-4),arrayFiles[i]));
+        }
+        radiantDiagramsObservableList = FXCollections.observableArrayList(radiantDiagrams);
+
+
+
+        //Чтение библиотеки кривых чувствительности приемников
+        directory = new File("src/main/resources/Library/ReceiverDiagram");
+        arrayFiles = directory.listFiles();
+        for (int i=0;i<=arrayFiles.length-1;i++){
+            receiverDiagrams.add(new Diagram(arrayFiles[i].getName().substring(0,arrayFiles[i].getName().length()-4),arrayFiles[i]));
+        }
+        receiverDiagramsObservableList = FXCollections.observableArrayList(receiverDiagrams);
+
 
         //Создание кнопки для добавления источников
         addRadiantButton = LFWindow.addButton("Добавить", 50, 100 + RadiantGUIList.size() * marginY);

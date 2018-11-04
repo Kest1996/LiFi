@@ -1,21 +1,30 @@
 package gui;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.scene.control.*;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import radiation.Diagram;
 import radiation.Radiant;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.stage.Modality;
 
+import java.io.File;
+import java.util.ArrayList;
+
+import static gui.MainGUI.radiantDiagramsObservableList;
+
 public class EditRadiantGUI {
     private AnchorPane rootNodeChild = new AnchorPane();
     private Stage editRadiantWindow;
     private RadiantGUI radiantGUI;
     private TextField nameTF;
-    private TextField iMaxTF;
-    private TextField iTF;
+    private TextField FeTF;
+    private ComboBox<Diagram> spectrumList = new ComboBox<>();
+
     EditRadiantGUI(RadiantGUI radiantGUI, int id) {
         //Создание базы окна
         this.radiantGUI = radiantGUI;
@@ -36,24 +45,24 @@ public class EditRadiantGUI {
         int startX = 20;
         int startY = 20;
         //name
-        Label label = addLabel("name",startX,startY);
+        Label label = addLabel("Имя",startX,startY);
         nameTF = addTextField(radiantGUI.getName(),startX+marginX,startY);
-        //iMax
-        label = addLabel("iMax",startX,startY+marginY);
-        iMaxTF = addTextField(radiantGUI.getiMax(),startX+marginX,startY+marginY);
-        iMaxTF.textProperty().addListener((ae, oldValue, newValue)-> {
+        //Fe
+        label = addLabel("Фe",startX,startY+marginY);
+        FeTF = addTextField(radiantGUI.getFe(),startX+marginX,startY+marginY);
+        FeTF.textProperty().addListener((ae, oldValue, newValue)-> {
             if (!checkDecimal(newValue)) {
-                iMaxTF.setText(oldValue);
+                FeTF.setText(oldValue);
             }
         });
-        //i
-        label = addLabel("i",startX,startY+marginY+marginY);
-        iTF = addTextField(radiantGUI.getI(),startX+marginX,startY+marginY+marginY);
-        iTF.textProperty().addListener((ae, oldValue, newValue)-> {
-            if (!checkDecimal(newValue)) {
-                iTF.setText(oldValue);
-            }
-        });
+        //spectrum
+        label = addLabel("Спектр",startX,startY+marginY+marginY);
+        spectrumList = new ComboBox<>(radiantDiagramsObservableList);
+        rootNodeChild.getChildren().add(spectrumList);
+        rootNodeChild.setLeftAnchor(spectrumList, (double) startX+marginX);
+        rootNodeChild.setTopAnchor(spectrumList, (double) startY+marginY+marginY);
+        spectrumList.getSelectionModel().select(getDiagInit(radiantGUI.getSpectrum()));
+
         //Кнопки
         //OK
         Button okButton = addButton("OK", 20,250);
@@ -97,7 +106,8 @@ public class EditRadiantGUI {
         return textField;
     }
     private void okButtonReact(ActionEvent ae) {
-        Radiant radiant = new Radiant(Double.parseDouble(iMaxTF.getText()),nameTF.getText(),Double.parseDouble(iTF.getText()));
+        System.out.println(spectrumList);
+        Radiant radiant = new Radiant(Double.parseDouble(FeTF.getText()),nameTF.getText(),spectrumList.getValue().toString());
         radiantGUI.setObject(radiant,this);
     }
     private void cancelButtonReact(ActionEvent ae) {
@@ -105,5 +115,14 @@ public class EditRadiantGUI {
     }
     public void close() {
         editRadiantWindow.close();
+    }
+
+    private int getDiagInit(String diagName){
+        for (int i=0;i<radiantDiagramsObservableList.size();i++) {
+            if (diagName.equals(radiantDiagramsObservableList.get(i).getName())) {
+                return i;
+            }
+        }
+        return 0;
     }
 }

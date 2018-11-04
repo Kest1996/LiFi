@@ -6,8 +6,8 @@ public class ReceiverGUILoad extends Receiver {
     private int x;
     private int y;
     private int z;
-    ReceiverGUILoad(String name,double sensitivity, double response_rate, int x, int y, int z) {
-        super(name, sensitivity, response_rate);
+    ReceiverGUILoad(String name,String sensitivity, int x, int y, int z) {
+        super(name, sensitivity);
         this.x = x;
         this.y = y;
         this.z = z;

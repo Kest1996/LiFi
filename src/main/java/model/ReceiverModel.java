@@ -7,9 +7,11 @@ import gui.ReceiverCoefData;
 import gui.ReceiverGUI;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import radiation.Diagram;
 import radiation.Radiant;
 import radiation.Receiver;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -20,11 +22,11 @@ import static java.lang.Math.acos;
 import static java.lang.Math.sqrt;
 
 public class ReceiverModel extends GuiModel {
-    private double sensetivity;
-    private double responseRate;
+    private String sensitivity;
     private String name;
     private transient ImageView imgv;
     private transient Map<String, Double> coefficients = new HashMap<>();
+    private transient Diagram sensitivityData;
     ReceiverModel() {
         img = "resources\\img\\receiver.jpg";
         sizeX = 0;
@@ -35,8 +37,7 @@ public class ReceiverModel extends GuiModel {
         this();
         Image imgo = new Image(img);
         imgv = new ImageView(imgo);
-        this.sensetivity = receiverGUI.getSensitivity();
-        this.responseRate = receiverGUI.getResponseRate();
+        this.sensitivity = receiverGUI.getSensitivity();
         this.name = receiverGUI.getName();
     }
 
@@ -96,5 +97,46 @@ public class ReceiverModel extends GuiModel {
      */
 
     private double sqr(double n) {return n*n;}
+
+    public double getIp(Diagram spectrum, Diagram eyeSensitivity){
+        //Коэффциенты получаемого сигнала
+        double[] optEff = {0.0000152,0.00000366,0.00000174,0.00000107,0.00000064,0.0000005,0.000000318,0.00000025};
+        double[] L = {0.5,1.0,1.5,2.0,2.5,3.0,3.5,4.0};
+        //Пересчет световых параметров в энергетические
+        Diagram Fe_x_V = new Diagram("Fe*V");
+        for (double i = getStartIndex(spectrum,eyeSensitivity);i<=getLastIndex(spectrum,eyeSensitivity);i++){
+            Fe_x_V.add(i,spectrum.getByX(i).getMeaning()*eyeSensitivity.getByX(i).getMeaning());
+        }
+        System.out.println("Size:"+Fe_x_V.getSize());
+        for (int i=0;i<Fe_x_V.getSize();i++){
+            System.out.println(Fe_x_V.getPoint(i));
+        }
+        return 0;
+    }
+    private double getStartIndex(Diagram diagram1, Diagram diagram2) {
+        if (diagram1.getFirst()>diagram2.getFirst()) {
+            return diagram1.getFirst();
+        }
+        else {
+            return diagram2.getFirst();
+        }
+    }
+    private double getLastIndex(Diagram diagram1, Diagram diagram2) {
+        if (diagram2.getLast()>diagram1.getLast()) {
+            return diagram1.getLast();
+        }
+        else {
+            return diagram2.getLast();
+        }
+    }
+
+    public void setSensitivity() {
+        String libPath = "src/main/resources/Library/ReceiverDiagram/";
+        File file = new File(libPath+name+".txt");
+        sensitivityData = new Diagram(file.getName().substring(0,file.getName().length()-4),file);
+    }
+    public Diagram getSensitivityData(){
+        return sensitivityData;
+    }
 
 }
