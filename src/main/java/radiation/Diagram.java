@@ -7,16 +7,16 @@ import java.util.Scanner;
 public class Diagram {
     protected String name;
     protected ArrayList<DiagramPoint> dependence = new ArrayList<>();
-    protected transient double first;
-    protected transient double last;
+    protected transient double begin;
+    protected transient double end;
     public Diagram(String name) {
         this.name = name;
     }
     public Diagram(String name, ArrayList<DiagramPoint> dependence) {
         this.name = name;
         this.dependence = dependence;
-        first = dependence.get(0).getIndex();
-        last = dependence.get(dependence.size()-1).getIndex();
+        begin = dependence.get(0).getIndex();
+        end = dependence.get(dependence.size()-1).getIndex();
     }
     public Diagram(String name, String filePath) {
         this.name = name;
@@ -31,8 +31,8 @@ public class Diagram {
             String[] point = line.split("\t");
             this.dependence.add(new DiagramPoint(Double.parseDouble(point[0]),Double.parseDouble(point[1])));
         }
-        first = dependence.get(0).getIndex();
-        last = dependence.get(dependence.size()-1).getIndex();
+        begin = dependence.get(0).getIndex();
+        end = dependence.get(dependence.size()-1).getIndex();
     }
     public Diagram(String name, File file) {
         this.name = name;
@@ -47,14 +47,14 @@ public class Diagram {
             String[] point = line.split("\t");
             this.dependence.add(new DiagramPoint(Double.parseDouble(point[0]),Double.parseDouble(point[1])));
         }
-        first = dependence.get(0).getIndex();
-        last = dependence.get(dependence.size()-1).getIndex();
+        begin = dependence.get(0).getIndex();
+        end = dependence.get(dependence.size()-1).getIndex();
     }
-    public double getFirst() {
-        return first;
+    public double getBegin() {
+        return begin;
     }
-    public double getLast() {
-        return last;
+    public double getEnd() {
+        return end;
     }
     public String getName() {
         return name;
@@ -66,13 +66,29 @@ public class Diagram {
         return dependence.get(index);
     }
     public DiagramPoint getByX(double x) {
-        return getPoint((int)(x-getFirst()));
+        return getPoint(Math.abs((int)(x-getBegin())));
     }
     public void add(double index, double meaning) {
         this.dependence.add(new DiagramPoint(index,meaning));
+        begin = dependence.get(0).getIndex();
+        end = dependence.get(dependence.size()-1).getIndex();
     }
     public int getSize() {
         return dependence.size();
+    }
+    public double[] getXAxis() {
+        double[] AxisX = new double[getSize()];
+        for (int i=0;i<getSize();i++){
+            AxisX[i] = getPoint(i).getIndex();
+        }
+        return AxisX;
+    }
+    public double[] getYAxis() {
+        double[] AxisY = new double[getSize()];
+        for (int i=0;i<getSize();i++){
+            AxisY[i] = getPoint(i).getMeaning();
+        }
+        return AxisY;
     }
     @Override
     public String toString() {

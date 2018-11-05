@@ -10,6 +10,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import radiation.Radiant;
 import radiation.Receiver;
 
 import java.lang.reflect.Array;
@@ -19,30 +20,37 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 
 public class ModelScene {
+    private ScrollPane scrollPane;
     private AnchorPane rootNodeChild = new AnchorPane();
     private Scene scene;
     private ArrayList<GuiModel> objects = new ArrayList<>();
     //Базовые сдвиги
     double xStart = 5;
     double yStart = 45;
-    ModelScene(Stage stage, int width, int height, ArrayList<GuiModel> objectsIn, String bazis) {
-        this.scene = new Scene(rootNodeChild, width, height);
-
+    ModelScene(Stage stage, int width, int height) {
+        rootNodeChild.setMinSize(width-20,height);
+        // ScrollPane
+        this.scrollPane = new ScrollPane();
+        scrollPane.setContent(rootNodeChild);
+        scrollPane.setPannable(true);
+        this.scene = new Scene(scrollPane, width, height);
     }
-    ModelScene(Stage stage, int width, int height, ArrayList<ReceiverModel> receiverModels, ArrayList<HashMap<String, ReceiverCoefData>> coefMap) {
-        this(stage, width, height, null, "");
-        double marginY = 30;
-        for (int i=0; i<receiverModels.size(); i++) {
-            addLabel(receiverModels.get(i).toString(),xStart,yStart+i*marginY*coefMap.get(i).size()+20*i);
-            Set<Map.Entry<String, ReceiverCoefData>> set = coefMap.get(i).entrySet();
-            int nnn1 = 0;
-            for (Map.Entry<String, ReceiverCoefData> me : set) {
-                addLabel("Radiant "+me.getKey() + ": ", xStart+200,yStart+marginY*(i*coefMap.get(i).size()+nnn1)+20*i);
-                addLabel("Расстояние: "+me.getValue().getR(),xStart+400,yStart+marginY*(i*coefMap.get(i).size()+nnn1)+20*i);
-                addLabel("Угол Фи: "+me.getValue().getPhi(),xStart+600,yStart+marginY*(i*coefMap.get(i).size()+nnn1)+20*i);
-                addLabel("Угол Тета: "+me.getValue().getTeta(),xStart+800,yStart+marginY*(i*coefMap.get(i).size()+nnn1)+20*i);
-                addLabel("Коэффициент: "+me.getValue().getK(),xStart+1000,yStart+marginY*(i*coefMap.get(i).size()+nnn1)+20*i);
-                nnn1++;
+    ModelScene(Stage stage, int width, int height, ArrayList<RadiantModel> Radiants, ArrayList<ReceiverModel> Receivers, ResultDataTable[][] resultData) {
+        this(stage, width, height);
+        double marginY = 300;
+        double c = 0;
+        for (int i=0;i<Receivers.size();i++){
+            for (int j=0;j<Radiants.size();j++){
+                ModelTable modelTable = new ModelTable(resultData[i][j].getList());
+                TableView<ResultData> table = modelTable.getTable();
+                rootNodeChild.getChildren().add(table);
+                rootNodeChild.setLeftAnchor(table, 10.0);
+                rootNodeChild.setTopAnchor(table, marginY*c);
+                rootNodeChild.setRightAnchor(table, width-730.0);
+                modelTable.setSizes();
+                addLabel("Приемник: "+Receivers.get(i).getName(),740,marginY*c);
+                addLabel("Источник: "+Radiants.get(j).getName(),740,marginY*c+30);
+                c = c+1;
             }
         }
     }

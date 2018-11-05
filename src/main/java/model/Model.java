@@ -5,6 +5,7 @@ import javafx.collections.FXCollections;
 import javafx.stage.Stage;
 import radiation.Diagram;
 import radiation.Radiant;
+import radiation.Receiver;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -44,18 +45,24 @@ public class Model{
         run();
     }
     public void run() {
-        Receivers.get(0).getIp(Radiants.get(0).getSpectrumData(),eyeSensitivity);
+        ResultDataTable[][] resultData = new ResultDataTable[Receivers.size()][Radiants.size()];
+        Diagram[][] IpL = new Diagram[Receivers.size()][Radiants.size()];
+        double Ip;
+        for (int i=0; i<Receivers.size();i++){
+            for (int j=0; j<Radiants.size();j++) {
+                resultData[i][j] = new ResultDataTable(Receivers.get(i).getIp(Radiants.get(j).getFe(), Radiants.get(j).getSpectrumData(), eyeSensitivity));
+            }
+        }
+
+        /*
         //Добавление всех объектов в массив для проверки пересечений
         ArrayList<GuiModel> objs = new ArrayList<>();
         objs.addAll(Radiants);
-
-        /*
         //getE
         ArrayList<HashMap<String, ReceiverCoefData>> coefMap = new ArrayList<>();
         for (int i = 0; i<Receivers.size();i++) {
             coefMap.add(Receivers.get(i).getE(objs));
         }
-        */
 
         //Перевод источников и приемников в массив для отображения
         ArrayList<GuiModel> objects = new ArrayList<>();
@@ -66,15 +73,17 @@ public class Model{
             objects.add(Receivers.get(i));
         }
 
+        */
+
+
         //Создание базы окна
         Stage ModelGUI = new Stage();
         ModelGUI.setTitle("Модель");
         ModelGUI.setX(0);
         ModelGUI.setY(0);
         //Установка расположения
-        ModelScene sceneXZ = new ModelScene(ModelGUI, 1280, (720 - 50), objects,"");
-        //Вывод коэффициентов
-        ModelGUI.setScene(sceneXZ.getScene());
+        ModelScene modelScene = new ModelScene(ModelGUI, 1280, (720 - 50),Radiants,Receivers,resultData);
+        ModelGUI.setScene(modelScene.getScene());
 
         ModelGUI.show();
         ModelGUI.setMaximized(true);

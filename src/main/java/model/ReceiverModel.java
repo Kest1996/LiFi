@@ -96,37 +96,75 @@ public class ReceiverModel extends GuiModel {
     }
      */
 
-    private double sqr(double n) {return n*n;}
 
-    public double getIp(Diagram spectrum, Diagram eyeSensitivity){
+    public Diagram getIp(double Fe,Diagram spectrum, Diagram eyeSensitivity){
         //Коэффциенты получаемого сигнала
         double[] optEff = {0.0000152,0.00000366,0.00000174,0.00000107,0.00000064,0.0000005,0.000000318,0.00000025};
         double[] L = {0.5,1.0,1.5,2.0,2.5,3.0,3.5,4.0};
         //Пересчет световых параметров в энергетические
         Diagram Fe_x_V = new Diagram("Fe*V");
-        for (double i = getStartIndex(spectrum,eyeSensitivity);i<=getLastIndex(spectrum,eyeSensitivity);i++){
+        double start = getStartIndex(spectrum,eyeSensitivity);
+        double end = getLastIndex(spectrum,eyeSensitivity);
+        for (double i = start;i<=end;i++){
             Fe_x_V.add(i,spectrum.getByX(i).getMeaning()*eyeSensitivity.getByX(i).getMeaning());
         }
-        System.out.println("Size:"+Fe_x_V.getSize());
-        for (int i=0;i<Fe_x_V.getSize();i++){
-            System.out.println(Fe_x_V.getPoint(i));
+        Diagram FeLED = new Diagram("FeLED");
+        double FeLEDn = 0;
+        for (double i = start;i<=end-1;i++){
+            FeLED.add(i,(Fe_x_V.getByX(i+1).getMeaning()+Fe_x_V.getByX(i).getMeaning())*(i+1-i)/2);
+            FeLEDn = FeLEDn + FeLED.getByX(i).getMeaning();
         }
-        return 0;
+        FeLEDn = FeLEDn*683;
+        /*Нормировка значений через коэффициент распределения энергетической спектральной плотности к
+        абсолютной величине, с учетом полной оптической мощности, излучаемой источником.
+         */
+        double Kn = Fe/FeLEDn;
+        Diagram spectrumn = new Diagram("spectrumn");
+        for (double i=spectrum.getBegin();i<=spectrum.getEnd();i++){
+            spectrumn.add(i,spectrum.getByX(i).getMeaning()*Kn);
+        }
+        /*Учет потерь потока излучения при преобразовании излучения от источника до приемника с учетом геометрических
+        ограничений, связанных с размером приёмного устройства и удаленностью от источника излучения. Преобразование
+        спектральных кривых (спектральной плотности излучения источника света и спектральной чувствительности фотодиода)
+        */
+        ArrayList<Diagram> FeL = new ArrayList<>();
+        for (int i=0;i<L.length;i++) {
+            FeL.add(new Diagram("Fe"+L[i]));
+            start = getStartIndex(spectrumn,sensitivityData);
+            end = getLastIndex(spectrumn,sensitivityData);
+            for (double j=start;j<=end;j++) {
+                FeL.get(i).add(j,spectrumn.getByX(j).getMeaning()*sensitivityData.getByX(j).getMeaning()*optEff[i]);
+            }
+        }
+        /*Расчет величины фототока Ip [A], получаемого в результате спектральных преобразований
+        с учетом геометрических потерь на фотоприёмнике.*/
+        Diagram Ip = new Diagram("Ip");
+        double IpL;
+        for (int i=0;i<L.length;i++) {
+            IpL = 0;
+            start = FeL.get(i).getBegin();
+            end = FeL.get(i).getEnd();
+            for (double j=start;j<=end-1;j++) {
+                IpL = IpL + (FeL.get(i).getByX(j+1).getMeaning()+FeL.get(i).getByX(j).getMeaning())*(j+1-j)/2;
+            }
+            Ip.add(L[i],IpL);
+        }
+        return Ip;
     }
     private double getStartIndex(Diagram diagram1, Diagram diagram2) {
-        if (diagram1.getFirst()>diagram2.getFirst()) {
-            return diagram1.getFirst();
+        if (diagram1.getBegin()>diagram2.getBegin()) {
+            return diagram1.getBegin();
         }
         else {
-            return diagram2.getFirst();
+            return diagram2.getBegin();
         }
     }
     private double getLastIndex(Diagram diagram1, Diagram diagram2) {
-        if (diagram2.getLast()>diagram1.getLast()) {
-            return diagram1.getLast();
+        if (diagram2.getEnd()>diagram1.getEnd()) {
+            return diagram1.getEnd();
         }
         else {
-            return diagram2.getLast();
+            return diagram2.getEnd();
         }
     }
 
@@ -139,4 +177,23 @@ public class ReceiverModel extends GuiModel {
         return sensitivityData;
     }
 
+    private static double sqr(double x){
+        return x*x;
+    }
+    public static double countSNR(double Ip) {
+        double n = 1.1; //Глубина модуляции переменного СВЧ излучения
+        double q = 1.6*Math.pow(10,-19); //Элементарный заряд
+        double KbT = 2.59*Math.pow(10,-2); //Тепловая энергия
+        double Rl = 50.0; //Сопротвдение нагрузки приемника
+        double B = 1.5*Math.pow(10,8); //Ширина полосы пропускания
+        double Id = 20*Math.pow(10,-9);
+        double SNR1 = (sqr(n)*sqr(Ip)*Rl)/(8*q*KbT*B); //Термический
+        double SNR2 = (n*Ip)/(2*sqrt(2)*q*B); //Фотонный
+        double SNR3 = (sqr(n)*sqr(Ip))/(2*sqrt(2)*q*B*(n*Ip+sqrt(2)*Id)); //Теневого тока
+        double SNR = 1/(1/SNR1+1/SNR2+1/SNR3);
+        return SNR;
+    }
+    public String getName() {
+        return name;
+    }
 }

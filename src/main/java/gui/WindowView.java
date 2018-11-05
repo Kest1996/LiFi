@@ -31,7 +31,7 @@ public class WindowView{
         this.sizeX = sizeX;
         this.sizeY = sizeY;
         this.rootNode = new AnchorPane();
-        //this.scene = new Scene(rootNode, sizeX, sizeY);
+        rootNode.setMinSize(sizeX-20,sizeY);
         // ScrollPane
         this.scrollPane = new ScrollPane();
         scrollPane.setContent(rootNode);
@@ -41,6 +41,11 @@ public class WindowView{
     public Scene getScene() {
         return scene;
     }
+
+    public ScrollPane getScrollPane() {
+        return scrollPane;
+    }
+
     public AnchorPane getRootNode() {
         return rootNode;
     }

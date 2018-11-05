@@ -125,11 +125,11 @@ public class MainGUI extends Application {
         runMenu.getItems().addAll(runRunMenu);
 
         // Разделяющие линии
-        Line SeparatingLine1 = new Line(420, 50, 420, LFWindow.getScene().getHeight());
+        Line SeparatingLine1 = new Line(420, 50, 420, LFWindow.getScene().getHeight()-10);
         SeparatingLine1.setStrokeWidth(10);
         SeparatingLine1.setStroke(Color.BLACK);
         rootNode.getChildren().addAll(SeparatingLine1);
-        Line SeparatingLine2 = new Line(840, 50, 840, LFWindow.getScene().getHeight());
+        Line SeparatingLine2 = new Line(840, 50, 840, LFWindow.getScene().getHeight()-10);
         SeparatingLine2.setStrokeWidth(10);
         SeparatingLine2.setStroke(Color.BLACK);
         rootNode.getChildren().addAll(SeparatingLine2);
@@ -171,12 +171,20 @@ public class MainGUI extends Application {
         addRadiantButton.setOnAction((ae) -> {
             RadiantGUIList.add(LFWindow.addRadiantGUI(radiantsObservableList, 50, 100 + RadiantGUIList.size() * marginY, RadiantGUIList.size()));
             rootNode.setTopAnchor(addRadiantButton, (double) (100 + RadiantGUIList.size() * marginY));
+            if ((100 + RadiantGUIList.size() * marginY+30)>SeparatingLine1.getEndY()) {
+                SeparatingLine1.setEndY(100 + RadiantGUIList.size() * marginY+30);
+                SeparatingLine2.setEndY(100 + RadiantGUIList.size() * marginY+30);
+            }
         });
         //Создание кнопки для добавления приемников
         addReceiverButton = LFWindow.addButton("Добавить", 880, 100 + ReceiverGUIList.size() * marginY);
         addReceiverButton.setOnAction((ae) -> {
             ReceiverGUIList.add(LFWindow.addReceiverGUI(receiversObservableList, 880, 100 + ReceiverGUIList.size() * marginY, ReceiverGUIList.size()));
             rootNode.setTopAnchor(addReceiverButton, (double) (100 + ReceiverGUIList.size() * marginY));
+            if ((100 + ReceiverGUIList.size() * marginY+30)>SeparatingLine1.getEndY()) {
+                SeparatingLine1.setEndY(100 + ReceiverGUIList.size() * marginY+30);
+                SeparatingLine2.setEndY(100 + ReceiverGUIList.size() * marginY+30);
+            }
         });
     }
 
@@ -318,10 +326,10 @@ public class MainGUI extends Application {
     public static void moveReceiversGUI (int start, int finish){
         int marginY = 60;
         for (int i=start;i<finish;i++){
-            LFWindow.moveReceiverGUI(ReceiverGUIList.get(i),440,100+i*marginY);
+            LFWindow.moveReceiverGUI(ReceiverGUIList.get(i),880,100+i*marginY);
             ReceiverGUIList.get(i).setId(i);
         }
-        LFWindow.moveButton(addReceiverButton,440,100+ReceiverGUIList.size()*marginY);
+        LFWindow.moveButton(addReceiverButton,880,100+ReceiverGUIList.size()*marginY);
     }
     public static void moveReceiversGUI (int start){
         moveReceiversGUI (start, ReceiverGUIList.size());
