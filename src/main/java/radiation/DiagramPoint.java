@@ -1,16 +1,31 @@
 package radiation;
 
 public class DiagramPoint {
+
     private double index;
     private double meaning;
+
+    /**
+     * Конструктор
+     * @param index
+     * @param meaning
+     */
+
     DiagramPoint(double index, double meaning) {
         this.index = index;
         this.meaning = meaning;
     }
+
+    /**
+     * Конструктор
+     * @param diagramPoint
+     */
+
     DiagramPoint(DiagramPoint diagramPoint) {
         this.index = diagramPoint.getIndex();
         this.meaning = diagramPoint.getMeaning();
     }
+
     public double getIndex() {
         return index;
     }

@@ -30,8 +30,16 @@ public class ReceiverGUI {
     private int x;
     private int y;
     private int z;
+
+    /**
+     *
+     * @param receiversObservableList
+     * @param id
+     */
+
     ReceiverGUI(ObservableList<Receiver> receiversObservableList, int id) {
         this.id = id;
+
         //Выпадающий список
         this.receiversList = new ComboBox<>(receiversObservableList);
       /*
@@ -39,19 +47,23 @@ public class ReceiverGUI {
 
        });
        */
+
         //Кнопка для удаления
         deleteButton = new Button("Удалить");
         deleteButton.setFont(MainGUI.defaultFont);
         deleteButton.setOnAction(this::DeleteButtonReact);
+
         //Кнопка для редактирования
         editButton = new Button("Редактировать");
         editButton.setFont(MainGUI.defaultFont);
         editButton.setOnAction(this::EditButtonReact);
+
         //X
         xL = new Label("X:");
         xL.setFont(MainGUI.defaultFont);
         xTF = new TextField("0");
         xTF.setFont(MainGUI.defaultFont);
+
         //Чтобы только целые числа
         xTF.textProperty().addListener((ae,oldValue,newValue)-> { {
             if ((!newValue.matches("\\d{1,1000}") || newValue.startsWith("00")) & !newValue.equals("")) {
@@ -59,11 +71,13 @@ public class ReceiverGUI {
             }
         }
         });
+
         //Y
         yL = new Label("Y:");
         yL.setFont(MainGUI.defaultFont);
         yTF = new TextField("0");
         yTF.setFont(MainGUI.defaultFont);
+
         //Чтобы только целые числа
         yTF.textProperty().addListener((ae,oldValue,newValue)-> { {
             if ((!newValue.matches("\\d{1,1000}") || newValue.startsWith("00")) & !newValue.equals("")){
@@ -71,11 +85,13 @@ public class ReceiverGUI {
             }
         }
         });
+
         //Z
         zL = new Label("Z:");
         zL.setFont(MainGUI.defaultFont);
         zTF = new TextField("0");
         zTF.setFont(MainGUI.defaultFont);
+
         //Чтобы только целые числа
         zTF.textProperty().addListener((ae,oldValue,newValue)-> { {
             if ((!newValue.matches("\\d{1,1000}") || newValue.startsWith("00")) & !newValue.equals("")){
@@ -84,10 +100,26 @@ public class ReceiverGUI {
         }
         });
     }
+
+    /**
+     *
+     * @param receiversObservableList
+     * @param id
+     * @param value
+     */
+
     ReceiverGUI(ObservableList<Receiver> receiversObservableList, int id, Receiver value) {
         this(receiversObservableList, id);
         this.receiversList.setValue(value);
     }
+
+    /**
+     *
+     * @param receiversObservableList
+     * @param id
+     * @param value
+     */
+
     ReceiverGUI(ObservableList<Receiver> receiversObservableList, int id, ReceiverGUILoad value) {
         this(receiversObservableList, id, (Receiver) value);
         //Загрузка координат
@@ -95,31 +127,49 @@ public class ReceiverGUI {
         yTF.setText(""+value.getY());
         zTF.setText(""+value.getZ());
     }
+
     public ComboBox<Receiver> getList() {
         return receiversList;
     }
+
     public Button getDeleteButton() {
         return deleteButton;
     }
+
     public Button getEditButton() {
         return editButton;
     }
+
     //Функции, нужные для добавления полей и их расположения на сцене
     public TextField getxTF() { return xTF; }
+
     public TextField getyTF() { return yTF; }
+
     public TextField getzTF() { return zTF; }
+
     public Label getxL() { return xL; }
+
     public Label getyL() { return yL; }
+
     public Label getzL() { return zL; }
+
     //Возврат установленных координат
     public int getX() { return Integer.parseInt(xTF.getText()); }
+
     public int getY() { return Integer.parseInt(yTF.getText()); }
+
     public int getZ() { return Integer.parseInt(zTF.getText()); }
+
     //Возврат объекта
     public Receiver getObject() {
         return receiversList.getValue();
     }
-    //Возврат всех элементов для удаления
+
+    /**
+     * Возврат всех элементов для удаления
+     * @return
+     */
+
     public ArrayList<Object> getDeleteItems() {
         ArrayList<Object> objects = new ArrayList<>();
         objects.add(this.xTF);
@@ -133,29 +183,49 @@ public class ReceiverGUI {
         objects.add(editButton);
         return objects;
     }
+
     //Управление Id
     public int getId() {
         return id;
     }
+
     public void setId(int newId) {
         this.id = newId;
     }
-    //Реакция на кнопку удаления
+
+    /**
+     * Реакция на кнопку удаления
+     * @param ae
+     */
+
     private void DeleteButtonReact(ActionEvent ae) {
         MainGUI.LFWindow.removeReceiverGUI(this, id);
     }
-    //Реакция на кнопку редактирования
+
+    /**
+     * Реакция на кнопку редактирования
+     * @param ae
+     */
+
     private void EditButtonReact(ActionEvent ae) {
         EditReceiverGUI EditWindow = new EditReceiverGUI(this, id);
     }
+
     //Функции возврата значений
     public String getName() {
         return getObject().getName();
     }
+
     public String getSensitivity() {
         return getObject().getSensitivity();
     }
-    //Обработка редактирования
+
+    /**
+     * Обработка редактирования
+     * @param receiver
+     * @param EditWindow
+     */
+
     public void setObject(Receiver receiver, EditReceiverGUI EditWindow) {
         //Есть ли уже такой приемник
         int check = checkAddList(receiver);
@@ -174,12 +244,15 @@ public class ReceiverGUI {
         Stage stage = new Stage();
         stage.setTitle("Библиотека");
         stage.setScene(scene);
+
         //Указание приоритета
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.show();
+
         //Установка расположения
         stage.setX(200);
         stage.setY(200);
+
         //Расположение элементов
         //Надпись
         Label label;
@@ -194,6 +267,7 @@ public class ReceiverGUI {
         rootNodeChild2.getChildren().add(label);
         rootNodeChild2.setLeftAnchor(label, 10.0);
         rootNodeChild2.setTopAnchor(label, 10.0);
+
         //Кнопка ДА
         Button yesButton = new Button("Да");
         yesButton.setFont(MainGUI.defaultFont);
@@ -210,6 +284,7 @@ public class ReceiverGUI {
             }
             stage.close();
         });
+
         //Кнопка НЕТ
         Button noButton = new Button("Нет");
         noButton.setFont(MainGUI.defaultFont);
@@ -225,6 +300,13 @@ public class ReceiverGUI {
         receiversList.setValue(receiver);
         EditWindow.close();
     }
+
+    /**
+     *
+     * @param receiver
+     * @return
+     */
+
     private int checkAddList(Receiver receiver){
         String name = receiver.getName();
         for (int i=0;i<receiversList.getItems().size();i++) {
@@ -234,6 +316,13 @@ public class ReceiverGUI {
         }
         return -1;
     }
+
+    /**
+     *
+     * @param receiver
+     * @return
+     */
+
     private boolean checkAddLibrary(Receiver receiver){
         ArrayList<Receiver> receivers = GLoader.loadReceiverLibrary();
         String name = receiver.getName();
@@ -244,7 +333,11 @@ public class ReceiverGUI {
         }
         return false;
     }
-    //Обновление объекта для сохранения
+
+    /**
+     * Обновление объекта для сохранения
+     */
+
     public void updateSaveObject() {
         x = Integer.parseInt(xTF.getText());
         y = Integer.parseInt(yTF.getText());
@@ -252,7 +345,12 @@ public class ReceiverGUI {
         sensitivity = getSensitivity();
         name = getName();
     }
-    //Преобразование координат для Hashmap
+
+    /**
+     * Преобразование координат для Hashmap
+     * @return
+     */
+
     public String getCoords() {
         return (x+"_"+y+"_"+z);
     }

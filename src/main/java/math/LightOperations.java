@@ -10,6 +10,12 @@ import java.util.Set;
 
 public class LightOperations {
 
+    /**
+     *
+     * @param radiantPlane
+     * @param receiverPlane
+     */
+
     public static void receptionOfRadiation(Plane<Radiant> radiantPlane, Plane<Receiver> receiverPlane){
 
         //Получение множества координат излучателей

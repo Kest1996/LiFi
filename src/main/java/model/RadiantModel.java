@@ -14,31 +14,62 @@ import java.io.File;
 import java.util.ArrayList;
 
 public class RadiantModel extends GuiModel {
+
     private double Fe;
     private String name;
     private String spectrum;
 
     private transient Diagram spectrumData;
     private transient ImageView imgv;
+
+    /**
+     * Конструктор
+     */
+
     RadiantModel(){
         img = "resources\\img\\radiant.jpg";
         sizeX = 0;
         sizeY = 0;
         sizeZ = 0;
     }
+
+    /**
+     * Получение энергии
+     * @param phi
+     * @param teta
+     * @return
+     */
+
     public double getE(double phi, double teta) {
         double Emax = 1000;
         return Emax/(((180/0.02)*(180/0.02)));
     }
+
+    /**
+     * Получение диаграммы направленности
+     * @return
+     */
+
     public Diagram getSpectrumData() {
         return spectrumData;
     }
+
+    /**
+     * Получение имени излучателя
+     * @return
+     */
+
     public String getName() {
         return name;
     }
+
     public double getFe() {
         return Fe;
     }
+
+    /**
+     * Запись спектра
+     */
 
     public void setSpectrum() {
         String libPath = "src/main/resources/Library/RadiantDiagram/";

@@ -1,11 +1,19 @@
 package model;
 
 public class ResultData {
+
     private double L;
     private double SNR;
     private double modulation;
     private String modulationName;
     private double speed;
+
+    /**
+     * Конструктор
+     * @param L
+     * @param Ip
+     */
+
     public ResultData(double L, double Ip) {
         this.L = L;
         this.SNR = ReceiverModel.countSNR(Ip);
@@ -13,12 +21,15 @@ public class ResultData {
         this.modulationName = countModulationName(this.modulation);
         this.speed = countSpeed(this.modulation);
     }
+
     private double log(double a, double b) {
         return Math.log(a)/Math.log(b);
     }
+
     private double countModulation(double x) {
         return Math.floor(log(1+x,2));
     }
+
     private String countModulationName(double x){
         if (x<1) {
             return "NO";
@@ -31,6 +42,13 @@ public class ResultData {
         }
         return (((int)Math.pow(2,x))+"-QAM");
     }
+
+    /**
+     * Расчет скорости передачи данных
+     * @param x
+     * @return
+     */
+
     private double countSpeed(double x) {
         double cr; //coding rate
         if (x<2) {
@@ -50,15 +68,19 @@ public class ResultData {
     public double getL() {
         return L;
     }
+
     public double getModulation() {
         return modulation;
     }
+
     public double getSNR() {
         return SNR;
     }
+
     public double getSpeed() {
         return speed;
     }
+
     public String getModulationName() {
         return modulationName;
     }

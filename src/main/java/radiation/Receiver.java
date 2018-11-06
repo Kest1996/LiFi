@@ -6,6 +6,12 @@ public class Receiver {
     transient private double energy = 0;
     protected String name;
 
+    /**
+     * Конструктор
+     * @param name
+     * @param sensitivity
+     */
+
     public Receiver (String name,String sensitivity) {
         this.sensitivity = sensitivity;
         this.name = name;

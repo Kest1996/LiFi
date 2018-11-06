@@ -8,12 +8,20 @@ import javafx.scene.control.cell.PropertyValueFactory;
 
 public class ModelTable {
     TableView<ResultData> table = new TableView<ResultData>();
+
     // Создание колонок
     TableColumn<ResultData, Double> LCol = new TableColumn<ResultData, Double>("L");
     TableColumn<ResultData, Double> ModulationCol = new TableColumn<ResultData, Double>("Глубина кодирования, бит/символ");
     TableColumn<ResultData, String> ModulationNameCol = new TableColumn<ResultData, String>("Модуляция");
-    TableColumn<ResultData, Double> SpeedCol = new TableColumn<ResultData, Double>("Скорость передачи, МБайт/с");
+    TableColumn<ResultData, Double> SpeedCol = new TableColumn<ResultData, Double>("Максимальная скорость передачи, МБайт/с");
+
+    /**
+     * Конструктор
+     * @param list
+     */
+
     ModelTable(ObservableList<ResultData> list) {
+
         // Заполнители
         LCol.setCellValueFactory(new PropertyValueFactory<>("L"));
         ModulationCol.setCellValueFactory(new PropertyValueFactory<>("modulation"));
@@ -21,10 +29,15 @@ public class ModelTable {
         SpeedCol.setCellValueFactory(new PropertyValueFactory<>("speed"));
         table.getColumns().addAll(LCol, ModulationCol, ModulationNameCol, SpeedCol);
         table.setItems(list);
+
         // Размеры
         table.setFixedCellSize(25);
         table.prefHeightProperty().bind(Bindings.size(table.getItems()).multiply(table.getFixedCellSize()).add(25));
     }
+
+    /**
+     * Запись размеров по умолчанию
+     */
 
     public void setSizes() {
         LCol.prefWidthProperty().bind(table.widthProperty().multiply(0.05));
@@ -32,6 +45,11 @@ public class ModelTable {
         ModulationNameCol.prefWidthProperty().bind(table.widthProperty().multiply(0.2));
         SpeedCol.prefWidthProperty().bind(table.widthProperty().multiply(0.39));
     }
+
+    /**
+     * Получение таблиц
+     * @return
+     */
 
     public TableView<ResultData> getTable() {
         return table;

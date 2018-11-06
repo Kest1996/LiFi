@@ -16,17 +16,33 @@ public class Plane<T> {
         this.sezeY = sezeY;
     }
 
-    //Запись в плоскость источника/приемника
+    /**
+     * Запись в плоскость источника/приемника
+     * @param x
+     * @param y
+     * @param object
+     */
+
     public void setObject(int x, int y, T object) {
         coordinates.put("" + x + "_" + y, new Coordinate(x, y, object));
     }
 
-    //Получение из массива источника/приемника
+    /**
+     * Получение из массива источника/приемника
+     * @param x
+     * @param y
+     * @return
+     */
+
     public T getObject (int x, int y){
         return coordinates.get("" + x + "_" + y).getObject();
     }
 
-    //получение множества координат
+    /**
+     * Получение множества координат
+     * @return
+     */
+
     public Set<String> getCoordinates() {
         return coordinates.keySet();
     }

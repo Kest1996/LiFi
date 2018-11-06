@@ -12,6 +12,14 @@ public class Coordinate <T> {
     //источник/приемник
     private T object;
 
+
+    /**
+     * Конструктор
+     * @param x
+     * @param y
+     * @param object
+     */
+
     public Coordinate(int x, int y, T object) {
         this.x = x;
         this.y = y;
@@ -34,7 +42,11 @@ public class Coordinate <T> {
         this.y = y;
     }
 
-    //Получение из объекта источника/приемника
+    /**
+     * Получение из объекта источника/приемника
+     * @return
+     */
+
     public T getObject() {
         return object;
     }
@@ -43,12 +55,20 @@ public class Coordinate <T> {
         this.object = object;
     }
 
-    //добавление интенсивности к итоговой светимости ячейки
+    /**
+     * добавление интенсивности к итоговой светимости ячейки
+     * @param i
+     */
+
     public void addI(double i) {
         this.i += i;
     }
 
-    //поучение светимости ячейки
+    /**
+     * Получение светимости ячейки
+     * @return
+     */
+
     public double getI() {
         return i;
     }

@@ -62,9 +62,19 @@ public class MainGUI extends Application {
 
     int marginY = 60;
 
+    /**
+     *
+     * @param args
+     */
+
     public static void main(String[] args) {
         launch(args);
     }
+
+    /**
+     *
+     * @param LFStage
+     */
 
     public void start(Stage LFStage) {
 
@@ -80,15 +90,22 @@ public class MainGUI extends Application {
         LFStage.setMaximized(true);
     }
 
-    //Очистка после открытия файла
+    /**
+     * Очистка после открытия файла
+     */
+
     private void clearALL() {
         rootNode.getChildren().removeAll(rootNode.getChildren());
         RadiantGUIList = new ArrayList<>();
         ReceiverGUIList = new ArrayList<>();
     }
 
-    //Отрисовка базовых элементов
+    /**
+     * Отрисовка базовых элементов
+     */
+
     private void setDefaultView() {
+
         // МенюБар
         MenuBar menuBar = new MenuBar();
         rootNode.setLeftAnchor(menuBar, (double) 0);
@@ -105,15 +122,19 @@ public class MainGUI extends Application {
         //Создать новый
         MenuItem newFileMenu = new MenuItem("Новый");
         newFileMenu.setOnAction((ae) -> createFile());
+
         //Открыть существующий
         MenuItem openFileMenu = new MenuItem("Открыть...");
         openFileMenu.setOnAction((ae) -> openFile(LFWindow));
+
         //Сохранить этот
         MenuItem saveFileMenu = new MenuItem("Сохранить");
         saveFileMenu.setOnAction((ae) -> saveFile(OpenedFileName));
+
         //Сохранить как
         MenuItem saveAsFileMenu = new MenuItem("Сохранить как...");
         saveAsFileMenu.setOnAction((ae) -> saveFileAs());
+
         //Выход
         MenuItem exitFileMenu = new MenuItem("Выход");
         exitFileMenu.setOnAction((ae) -> System.exit(0));
@@ -155,8 +176,6 @@ public class MainGUI extends Application {
         }
         radiantDiagramsObservableList = FXCollections.observableArrayList(radiantDiagrams);
 
-
-
         //Чтение библиотеки кривых чувствительности приемников
         directory = new File("src/main/resources/Library/ReceiverDiagram");
         arrayFiles = directory.listFiles();
@@ -164,7 +183,6 @@ public class MainGUI extends Application {
             receiverDiagrams.add(new Diagram(arrayFiles[i].getName().substring(0,arrayFiles[i].getName().length()-4),arrayFiles[i]));
         }
         receiverDiagramsObservableList = FXCollections.observableArrayList(receiverDiagrams);
-
 
         //Создание кнопки для добавления источников
         addRadiantButton = LFWindow.addButton("Добавить", 50, 100 + RadiantGUIList.size() * marginY);
@@ -176,6 +194,7 @@ public class MainGUI extends Application {
                 SeparatingLine2.setEndY(100 + RadiantGUIList.size() * marginY+30);
             }
         });
+
         //Создание кнопки для добавления приемников
         addReceiverButton = LFWindow.addButton("Добавить", 880, 100 + ReceiverGUIList.size() * marginY);
         addReceiverButton.setOnAction((ae) -> {
@@ -188,13 +207,21 @@ public class MainGUI extends Application {
         });
     }
 
-    //Запуск модели
+    /**
+     * Запуск модели
+     */
+
     private void runModel() {
         saveFile("resources\\saves\\temporary_saved_model.json");
         Model model = new Model("1","resources\\saves\\temporary_saved_model.json");
     }
 
-    //Открытие файла
+    /**
+     * Открытие файла
+     * @param fileName
+     * @param window
+     */
+
     private void openFile(String fileName, WindowView window) {
         clearALL();
         setDefaultView();
@@ -218,6 +245,11 @@ public class MainGUI extends Application {
         LFWindow.moveButton(addReceiverButton, 880, 100 + ReceiverGUIList.size() * marginY);
     }
 
+    /**
+     *
+     * @param window
+     */
+
     private void openFile(WindowView window) {
         String fileName = openFileDialog();
         if (fileName != null) {
@@ -225,7 +257,12 @@ public class MainGUI extends Application {
         }
     }
 
-    //Диалог открытия файла
+    /**
+     * Диалог открытия файла
+     * @param path
+     * @return
+     */
+
     private String openFileDialog(String path) {
         FileChooser fileChooser = new FileChooser();//Класс работы с диалогом выборки и сохранения
         fileChooser.setInitialDirectory(new File(path));
@@ -240,12 +277,20 @@ public class MainGUI extends Application {
         return null;
     }
 
+    /**
+     *
+     * @return
+     */
+
     private String openFileDialog() {
         String path = System.getProperty("user.dir");
         return openFileDialog(path);
     }
 
-    //Сохранение файла
+    /**
+     * Сохранение файла
+     */
+
     private void saveFileAs() {
         String fileName = saveFileDialog();
         if (fileName!=null) {
@@ -280,14 +325,22 @@ public class MainGUI extends Application {
         }
     }
 
-    //Создание нового файла
+    /**
+     * Создание нового файла
+     */
+
     private void createFile() {
         clearALL();
         setDefaultView();
         OpenedFileName = null;
     }
 
-    //Диалог сохранения файла
+    /**
+     * Диалог сохранения файла
+     * @param path
+     * @return
+     */
+
     private String saveFileDialog(String path) {
         FileChooser fileChooser = new FileChooser();//Класс работы с диалогом выборки и сохранения
         fileChooser.setTitle("Сохранить файл");//Заголовок диалога
@@ -301,12 +354,23 @@ public class MainGUI extends Application {
         }
         return null;
     }
+
+    /**
+     *
+     * @return
+     */
+
     private String saveFileDialog() {
         String path = System.getProperty("user.dir");
         return saveFileDialog(path);
     }
 
-    //Перемещение источников
+    /**
+     * Перемещение источников
+     * @param start
+     * @param finish
+     */
+
     public static void moveRadiantsGUI (int start, int finish){
         int marginY = 60;
         for (int i=start;i<finish;i++){
@@ -315,14 +379,30 @@ public class MainGUI extends Application {
         }
         LFWindow.moveButton(addRadiantButton,50,100+RadiantGUIList.size()*marginY);
     }
+
+    /**
+     *
+     * @param start
+     */
+
     public static void moveRadiantsGUI (int start){
         moveRadiantsGUI (start, RadiantGUIList.size());
     }
+
+    /**
+     *
+     */
+
     public static void moveRadiantsGUI (){
         moveRadiantsGUI (0, RadiantGUIList.size());
     }
 
-    //Перемещение приемников
+    /**
+     * Перемещение приемников
+     * @param start
+     * @param finish
+     */
+
     public static void moveReceiversGUI (int start, int finish){
         int marginY = 60;
         for (int i=start;i<finish;i++){
@@ -331,9 +411,20 @@ public class MainGUI extends Application {
         }
         LFWindow.moveButton(addReceiverButton,880,100+ReceiverGUIList.size()*marginY);
     }
+
+    /**
+     *
+     * @param start
+     */
+
     public static void moveReceiversGUI (int start){
         moveReceiversGUI (start, ReceiverGUIList.size());
     }
+
+    /**
+     *
+     */
+
     public static void moveReceiversGUI (){
         moveRadiantsGUI (0, ReceiverGUIList.size());
     }

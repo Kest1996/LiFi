@@ -13,6 +13,13 @@ public class ModelLoader {
     private ArrayList<ReceiverModel> Receivers;
 
     //Метод для чтения данных сохранеия
+
+    /**
+     *
+     * @param fileName
+     * @return
+     */
+
     private static ModelLoader getAll(String fileName) {
         //Считывание файла в строку
         try (FileReader jsonData = new FileReader(fileName))
@@ -27,11 +34,23 @@ public class ModelLoader {
         }
         return null;
     }
-    //Вернуть источники
+
+    /**
+     * Вернуть источники
+     * @param fileName
+     * @return
+     */
+
     public static ArrayList<RadiantModel> getRadiants(String fileName) {
         return getAll(fileName).Radiants;
     }
-    //Вернуть приемники
+
+    /**
+     * Вернуть приемники
+     * @param fileName
+     * @return
+     */
+
     public static ArrayList<ReceiverModel> getReceivers(String fileName) {
         return getAll(fileName).Receivers;
     }

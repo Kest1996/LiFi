@@ -20,13 +20,23 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 
 public class ModelScene {
+
     private ScrollPane scrollPane;
     private AnchorPane rootNodeChild = new AnchorPane();
     private Scene scene;
     private ArrayList<GuiModel> objects = new ArrayList<>();
+
     //Базовые сдвиги
     double xStart = 5;
     double yStart = 45;
+
+    /**
+     * Конструткор
+     * @param stage
+     * @param width
+     * @param height
+     */
+
     ModelScene(Stage stage, int width, int height) {
         rootNodeChild.setMinSize(width-20,height);
         // ScrollPane
@@ -35,6 +45,17 @@ public class ModelScene {
         scrollPane.setPannable(true);
         this.scene = new Scene(scrollPane, width, height);
     }
+
+    /**
+     *
+     * @param stage
+     * @param width
+     * @param height
+     * @param Radiants
+     * @param Receivers
+     * @param resultData
+     */
+
     ModelScene(Stage stage, int width, int height, ArrayList<RadiantModel> Radiants, ArrayList<ReceiverModel> Receivers, ResultDataTable[][] resultData) {
         this(stage, width, height);
         double marginY = 300;
@@ -59,6 +80,14 @@ public class ModelScene {
         return scene;
     }
 
+    /**
+     * Добавление кнопки
+     * @param defaultText
+     * @param x
+     * @param y
+     * @return
+     */
+
     public Button addButton(String defaultText, double x, double y) {
         Button button = new Button(defaultText);
         rootNodeChild.getChildren().add(button);
@@ -66,6 +95,15 @@ public class ModelScene {
         rootNodeChild.setTopAnchor(button, y);
         return button;
     }
+
+    /**
+     * Добавление тектсового поля
+     * @param text
+     * @param x
+     * @param y
+     * @return
+     */
+
     private Label addLabel(String text, double x, double y){
         Label label = new Label(text);
         label.setFont(MainGUI.defaultFont);
@@ -74,6 +112,15 @@ public class ModelScene {
         rootNodeChild.setTopAnchor(label, y);
         return label;
     }
+
+    /**
+     * Добавление поля для ввода текста
+     * @param defaultText
+     * @param x
+     * @param y
+     * @return
+     */
+
     private TextField addTextField(Object defaultText, double x, double y){
         TextField textField = new TextField(defaultText.toString());
         textField.setDisable(true);

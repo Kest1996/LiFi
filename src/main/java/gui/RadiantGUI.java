@@ -32,8 +32,16 @@ public class RadiantGUI {
     private int x;
     private int y;
     private int z;
+
+    /**
+     *
+     * @param radiantsObservableList
+     * @param id
+     */
+
     RadiantGUI(ObservableList<Radiant> radiantsObservableList, int id) {
        this.id = id;
+
        //Выпадающий список
        this.radiantsList = new ComboBox<>(radiantsObservableList);
       /*
@@ -41,19 +49,23 @@ public class RadiantGUI {
 
        });
        */
+
        //Кнопка для удаления
        deleteButton = new Button("Удалить");
        deleteButton.setFont(MainGUI.defaultFont);
        deleteButton.setOnAction(this::DeleteButtonReact);
+
        //Кнопка для редактирования
        editButton = new Button("Редактировать");
        editButton.setFont(MainGUI.defaultFont);
        editButton.setOnAction(this::EditButtonReact);
+
        //X
        xL = new Label("X:");
        xL.setFont(MainGUI.defaultFont);
        xTF = new TextField("0");
        xTF.setFont(MainGUI.defaultFont);
+
        //Чтобы только целые числа
        xTF.textProperty().addListener((ae,oldValue,newValue)-> { {
            if ((!newValue.matches("\\d{1,1000}") || newValue.startsWith("00")) & !newValue.equals("")) {
@@ -61,11 +73,13 @@ public class RadiantGUI {
            }
        }
        });
+
        //Y
        yL = new Label("Y:");
        yL.setFont(MainGUI.defaultFont);
        yTF = new TextField("0");
        yTF.setFont(MainGUI.defaultFont);
+
        //Чтобы только целые числа
        yTF.textProperty().addListener((ae,oldValue,newValue)-> { {
            if ((!newValue.matches("\\d{1,1000}") || newValue.startsWith("00")) & !newValue.equals("")){
@@ -73,11 +87,13 @@ public class RadiantGUI {
            }
        }
        });
+
        //Z
        zL = new Label("Z:");
        zL.setFont(MainGUI.defaultFont);
        zTF = new TextField("0");
        zTF.setFont(MainGUI.defaultFont);
+
        //Чтобы только целые числа
        zTF.textProperty().addListener((ae,oldValue,newValue)-> { {
            if ((!newValue.matches("\\d{1,1000}") || newValue.startsWith("00")) & !newValue.equals("")){
@@ -86,10 +102,26 @@ public class RadiantGUI {
        }
        });
     }
+
+    /**
+     *
+     * @param radiantsObservableList
+     * @param id
+     * @param value
+     */
+
     RadiantGUI(ObservableList<Radiant> radiantsObservableList, int id, Radiant value) {
         this(radiantsObservableList, id);
         this.radiantsList.setValue(value);
     }
+
+    /**
+     *
+     * @param radiantsObservableList
+     * @param id
+     * @param value
+     */
+
     RadiantGUI(ObservableList<Radiant> radiantsObservableList, int id, RadiantGUILoad value) {
         this(radiantsObservableList,id, (Radiant) value);
         //Загрузка координат
@@ -97,6 +129,7 @@ public class RadiantGUI {
         yTF.setText(""+value.getY());
         zTF.setText(""+value.getZ());
     }
+
     public ComboBox<Radiant> getList() {
         return radiantsList;
     }
@@ -106,6 +139,7 @@ public class RadiantGUI {
     public Button getEditButton() {
         return editButton;
     }
+
     //Функции, нужные для добавления полей и их расположения на сцене
     public TextField getxTF() { return xTF; }
     public TextField getyTF() { return yTF; }
@@ -113,14 +147,17 @@ public class RadiantGUI {
     public Label getxL() { return xL; }
     public Label getyL() { return yL; }
     public Label getzL() { return zL; }
+
     //Возврат установленных координат
     public int getX() { return Integer.parseInt(xTF.getText()); }
     public int getY() { return Integer.parseInt(yTF.getText()); }
     public int getZ() { return Integer.parseInt(zTF.getText()); }
+
     //Возврат объекта
     public Radiant getObject() {
         return radiantsList.getValue();
     }
+
     //Возврат всех элементов для удаления
     public ArrayList<Object> getDeleteItems() {
        ArrayList<Object> objects = new ArrayList<>();
@@ -135,6 +172,7 @@ public class RadiantGUI {
        objects.add(zL);
        return objects;
     }
+
     //Управление Id
     public int getId() {
         return id;
@@ -142,14 +180,25 @@ public class RadiantGUI {
     public void setId(int newId) {
         this.id = newId;
     }
-    //Реакция на кнопку удаления
+
+    /**
+     * Реакция на кнопку удаления
+     * @param ae
+     */
+
     private void DeleteButtonReact(ActionEvent ae) {
         MainGUI.LFWindow.removeRadiantGUI(this, id);
     }
-    //Реакция на кнопку редактирования
+
+    /**
+     * Реакция на кнопку редактирования
+     * @param ae
+     */
+
     private void EditButtonReact(ActionEvent ae) {
         EditRadiantGUI EditWindow = new EditRadiantGUI(this, id);
     }
+
     //Функции возврата значений
     public String getName() {
         return getObject().getName();
@@ -160,7 +209,13 @@ public class RadiantGUI {
     public String getSpectrum() {
         return getObject().getSpectrum();
     }
-    //Редактирование + изменение библиотеки
+
+    /**
+     * Редактирование + изменение библиотеки
+     * @param radiant
+     * @param EditWindow
+     */
+
     public void setObject(Radiant radiant, EditRadiantGUI EditWindow) {
         //Есть ли уже такой источник
         int check = checkAddList(radiant);
@@ -179,12 +234,15 @@ public class RadiantGUI {
         Stage stage = new Stage();
         stage.setTitle("Библиотека");
         stage.setScene(scene);
+
         //Указание приоритета
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.show();
+
         //Установка расположения
         stage.setX(200);
         stage.setY(200);
+
         //Расположение элементов
         //Надпись
         Label label;
@@ -215,6 +273,7 @@ public class RadiantGUI {
             }
             stage.close();
         });
+
         //Кнопка НЕТ
         Button noButton = new Button("Нет");
         noButton.setFont(MainGUI.defaultFont);
@@ -230,6 +289,13 @@ public class RadiantGUI {
         radiantsList.setValue(radiant);
         EditWindow.close();
     }
+
+    /**
+     *
+     * @param radiant
+     * @return
+     */
+
     private int checkAddList(Radiant radiant){
         String name = radiant.getName();
         for (int i=0;i<radiantsList.getItems().size();i++) {
@@ -239,6 +305,13 @@ public class RadiantGUI {
         }
         return -1;
     }
+
+    /**
+     *
+     * @param radiant
+     * @return
+     */
+
     private boolean checkAddLibrary(Radiant radiant){
         ArrayList<Radiant> radiants = GLoader.loadRadiantLibrary();
         String name = radiant.getName();
@@ -250,7 +323,10 @@ public class RadiantGUI {
         return false;
     }
 
-    //Обновление объекта для сохранения
+    /**
+     * Обновление объекта для сохранения
+     */
+
     public void updateSaveObject() {
         x = Integer.parseInt(xTF.getText());
         y = Integer.parseInt(yTF.getText());
@@ -260,7 +336,11 @@ public class RadiantGUI {
         name = getName();
     }
 
-    //Преобразование координат для Hashmap
+    /**
+     * Преобразование координат для Hashmap
+     * @return
+     */
+
     public String getCoords() {
         return (x+"_"+y+"_"+z);
     }
