@@ -262,9 +262,6 @@ public class ReceiverModel extends GuiModel {
         double B = 1.5*Math.pow(10,8); //Ширина полосы пропускания
         double Id = 20*Math.pow(10,-9);
         double SNR1 = (sqr(n)*sqr(Ip)*Rl)/(8*q*KbT*B); //Термический
-
-        System.out.println((8*q*KbT*B));
-
         double SNR2 = (n*Ip)/(2*sqrt(2)*q*B); //Фотонный
         double SNR3 = (sqr(n)*sqr(Ip))/(2*sqrt(2)*q*B*(n*Ip+sqrt(2)*Id)); //Теневого тока
         double SNR = 1/(1/SNR1+1/SNR2+1/SNR3);
