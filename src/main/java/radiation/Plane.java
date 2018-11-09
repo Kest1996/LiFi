@@ -9,11 +9,11 @@ public class Plane<T> {
     private HashMap<String, Coordinate<T>> coordinates = new HashMap<>();
 
     private int sizeX;
-    private int sezeY;
+    private int sizeY;
 
-    public Plane(int sizeX, int sezeY) {
+    public Plane(int sizeX, int sizeY) {
         this.sizeX = sizeX;
-        this.sezeY = sezeY;
+        this.sizeY = sizeY;
     }
 
     /**
