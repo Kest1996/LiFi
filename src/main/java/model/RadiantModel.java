@@ -18,6 +18,7 @@ public class RadiantModel extends GuiModel {
     private double Fe;
     private String name;
     private String spectrum;
+    private String directivity;
 
     private transient Diagram spectrumData;
     private transient ImageView imgv;

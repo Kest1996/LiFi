@@ -28,6 +28,7 @@ import javafx.scene.paint.Color;
 import loader.GLoader;
 import model.Model;
 import radiation.Diagram;
+import radiation.Directivity;
 import radiation.Radiant;
 import radiation.Receiver;
 import java.util.ArrayList;
@@ -58,6 +59,10 @@ public class MainGUI extends Application {
 
     private static ArrayList<Diagram> receiverDiagrams = new ArrayList<>();
     public static ObservableList<Diagram> receiverDiagramsObservableList;
+
+
+    private static ArrayList<Directivity> radiantDirectivities = new ArrayList<>();
+    public static ObservableList<Directivity> radiantDirectivitiesObservableList;
 
 
     int marginY = 60;
@@ -175,6 +180,15 @@ public class MainGUI extends Application {
             radiantDiagrams.add(new Diagram(arrayFiles[i].getName().substring(0,arrayFiles[i].getName().length()-4),arrayFiles[i]));
         }
         radiantDiagramsObservableList = FXCollections.observableArrayList(radiantDiagrams);
+
+
+        //Чтение библиотеки направленностей источников
+        directory = new File("src/main/resources/Library/Directivity");
+        arrayFiles = directory.listFiles();
+        for (int i=0;i<=arrayFiles.length-1;i++){
+            radiantDirectivities.add(new Directivity(arrayFiles[i].getName().substring(0,arrayFiles[i].getName().length()-4),arrayFiles[i]));
+        }
+        radiantDirectivitiesObservableList = FXCollections.observableArrayList(radiantDirectivities);
 
         //Чтение библиотеки кривых чувствительности приемников
         directory = new File("src/main/resources/Library/ReceiverDiagram");

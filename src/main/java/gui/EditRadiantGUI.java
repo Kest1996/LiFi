@@ -6,6 +6,7 @@ import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import radiation.Diagram;
+import radiation.Directivity;
 import radiation.Radiant;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
@@ -16,6 +17,7 @@ import java.io.File;
 import java.util.ArrayList;
 
 import static gui.MainGUI.radiantDiagramsObservableList;
+import static gui.MainGUI.radiantDirectivitiesObservableList;
 
 public class EditRadiantGUI {
     private AnchorPane rootNodeChild = new AnchorPane();
@@ -24,6 +26,7 @@ public class EditRadiantGUI {
     private TextField nameTF;
     private TextField FeTF;
     private ComboBox<Diagram> spectrumList = new ComboBox<>();
+    private ComboBox<Directivity> directivityList = new ComboBox<>();
 
     /**
      *
@@ -74,6 +77,14 @@ public class EditRadiantGUI {
         rootNodeChild.setLeftAnchor(spectrumList, (double) startX+marginX);
         rootNodeChild.setTopAnchor(spectrumList, (double) startY+marginY+marginY);
         spectrumList.getSelectionModel().select(getDiagInit(radiantGUI.getSpectrum()));
+
+        //directivity
+        label = addLabel("Направленность",startX,startY+marginY+marginY+marginY);
+        directivityList = new ComboBox<>(radiantDirectivitiesObservableList);
+        rootNodeChild.getChildren().add(directivityList);
+        rootNodeChild.setLeftAnchor(directivityList, (double) startX+marginX);
+        rootNodeChild.setTopAnchor(directivityList, (double) startY+marginY+marginY+marginY);
+        directivityList.getSelectionModel().select(getDirectivityInit(radiantGUI.getDirectivity()));
 
         //Кнопки
         //OK
@@ -161,7 +172,7 @@ public class EditRadiantGUI {
 
     private void okButtonReact(ActionEvent ae) {
         System.out.println(spectrumList);
-        Radiant radiant = new Radiant(Double.parseDouble(FeTF.getText()),nameTF.getText(),spectrumList.getValue().toString());
+        Radiant radiant = new Radiant(Double.parseDouble(FeTF.getText()),nameTF.getText(),spectrumList.getValue().toString(),directivityList.getValue().toString());
         radiantGUI.setObject(radiant,this);
     }
 
@@ -192,6 +203,14 @@ public class EditRadiantGUI {
     private int getDiagInit(String diagName){
         for (int i=0;i<radiantDiagramsObservableList.size();i++) {
             if (diagName.equals(radiantDiagramsObservableList.get(i).getName())) {
+                return i;
+            }
+        }
+        return 0;
+    }
+    private int getDirectivityInit(String diagName){
+        for (int i=0;i<radiantDirectivitiesObservableList.size();i++) {
+            if (diagName.equals(radiantDirectivitiesObservableList.get(i).getName())) {
                 return i;
             }
         }

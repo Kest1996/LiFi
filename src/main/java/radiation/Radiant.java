@@ -8,6 +8,8 @@ public class Radiant {
 
     protected String spectrum;
 
+    protected String directivity;
+
     /**
      * Конструктор
      * @param Fe
@@ -32,6 +34,13 @@ public class Radiant {
         this.spectrum = spectrum;
     }
 
+    public Radiant(double Fe, String name, String spectrum, String directivity) {
+        this.Fe = Fe;
+        this.name = name;
+        this.spectrum = spectrum;
+        this.directivity = directivity;
+    }
+
     public double getFe() {
         return Fe;
     }
@@ -54,6 +63,14 @@ public class Radiant {
 
     public void setSpectrum(String spectrum) {
         this.spectrum = spectrum;
+    }
+
+    public String getDirectivity() {
+        return directivity;
+    }
+
+    public void setDirectivity(String directivity) {
+        this.directivity = directivity;
     }
 
     /**

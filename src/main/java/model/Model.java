@@ -4,6 +4,7 @@ import gui.ReceiverCoefData;
 import javafx.collections.FXCollections;
 import javafx.stage.Stage;
 import radiation.Diagram;
+import radiation.Directivity;
 import radiation.Radiant;
 import radiation.Receiver;
 
@@ -18,6 +19,7 @@ public class Model{
 
     public transient ArrayList<Diagram> radiantDiagrams = new ArrayList<>();
     public transient ArrayList<Diagram> receiverDiagrams = new ArrayList<>();
+    public transient ArrayList<Directivity> radiantDirectivities = new ArrayList<>();
 
     private transient Diagram eyeSensitivity;
 
@@ -44,6 +46,13 @@ public class Model{
         File[] arrayFiles = directory.listFiles();
         for (int i=0;i<=arrayFiles.length-1;i++){
             radiantDiagrams.add(new Diagram(arrayFiles[i].getName().substring(0,arrayFiles[i].getName().length()-4),arrayFiles[i]));
+        }
+
+        //Чтение библиотеки направленности приемников
+        directory = new File("src/main/resources/Library/Directivity");
+        arrayFiles = directory.listFiles();
+        for (int i=0;i<=arrayFiles.length-1;i++){
+            radiantDirectivities.add(new Directivity(arrayFiles[i].getName().substring(0,arrayFiles[i].getName().length()-4),arrayFiles[i]));
         }
 
         //Чтение библиотеки кривых чувствительности приемников

@@ -28,7 +28,8 @@ public class RadiantGUI {
     private transient Label zL;
     private String name;
     private double Fe;
-    private String spectrum;
+    private String spectrum;;
+    private String directivity;
     private int x;
     private int y;
     private int z;
@@ -209,6 +210,9 @@ public class RadiantGUI {
     public String getSpectrum() {
         return getObject().getSpectrum();
     }
+    public String getDirectivity() {
+        return getObject().getDirectivity();
+    }
 
     /**
      * Редактирование + изменение библиотеки
@@ -333,6 +337,7 @@ public class RadiantGUI {
         z = Integer.parseInt(zTF.getText());
         Fe = getFe();
         spectrum = getSpectrum();
+        directivity = getDirectivity();
         name = getName();
     }
 
