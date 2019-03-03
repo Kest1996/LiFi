@@ -8,6 +8,7 @@ import gui.RadiantGUI;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import radiation.Diagram;
+import radiation.Directivity;
 import radiation.Radiant;
 
 import java.io.File;
@@ -21,6 +22,7 @@ public class RadiantModel extends GuiModel {
     private String directivity;
 
     private transient Diagram spectrumData;
+    private transient Directivity directivityData;
     private transient ImageView imgv;
 
     /**
@@ -47,12 +49,21 @@ public class RadiantModel extends GuiModel {
     }
 
     /**
-     * Получение диаграммы направленности
+     * Получение спектра излучения
      * @return
      */
 
     public Diagram getSpectrumData() {
         return spectrumData;
+    }
+
+    /**
+     * Получение диаграммы направленности
+     * @return
+     */
+
+    public Directivity getDirectivityData() {
+        return directivityData;
     }
 
     /**
@@ -76,5 +87,14 @@ public class RadiantModel extends GuiModel {
         String libPath = "src/main/resources/Library/RadiantDiagram/";
         File file = new File(libPath+spectrum+".txt");
         spectrumData = new Diagram(file.getName().substring(0,file.getName().length()-4),file);;
+    }
+    public void setDirectivity() {
+        String libPath = "src/main/resources/Library/Directivity/";
+        File file = new File(libPath+directivity+".txt");
+        directivityData = new Directivity(file.getName().substring(0,file.getName().length()-4),file);;
+    }
+
+    public void printDirectivityData() {
+        directivityData.print();
     }
 }

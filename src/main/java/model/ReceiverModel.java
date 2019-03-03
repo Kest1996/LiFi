@@ -29,6 +29,7 @@ public class ReceiverModel extends GuiModel {
     private transient ImageView imgv;
     private transient Map<String, Double> coefficients = new HashMap<>();
     private transient Diagram sensitivityData;
+    private transient double energy = 0;
 
     /**
      * Конструткор по умолчанию
@@ -266,6 +267,17 @@ public class ReceiverModel extends GuiModel {
         double SNR3 = (sqr(n)*sqr(Ip))/(2*sqrt(2)*q*B*(n*Ip+sqrt(2)*Id)); //Теневого тока
         double SNR = 1/(1/SNR1+1/SNR2+1/SNR3);
         return SNR;
+    }
+
+    /**
+     * Добавление энергии
+     */
+
+    public void addEnergy(double Aenergy) {
+        this.energy = this.energy + Aenergy;
+    }
+    public double getEnergy() {
+        return this.energy;
     }
 
     public String getName() {

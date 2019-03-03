@@ -39,6 +39,7 @@ public class Model{
         Radiants = ModelLoader.getRadiants(fileName);
         for (int i=0;i<Radiants.size();i++) {
             Radiants.get(i).setSpectrum();
+            Radiants.get(i).setDirectivity();
         }
 
         //Чтение библиотеки спектров источников
@@ -65,6 +66,7 @@ public class Model{
         //Чтение кривой чувствительности глаза
         File file = new File("src/main/resources/Library/eyeSensitivity.txt");
         eyeSensitivity = new Diagram(file.getName().substring(0,file.getName().length()-4),file);
+
         run();
     }
 
@@ -73,6 +75,34 @@ public class Model{
      */
 
     public void run() {
+
+        //Настройки модели и трассировки
+        //Точность по углу фи (ось X)
+        double dphi = 1000.0;
+        //Предельная дальность отслеживания
+        double maxDistance = 2000.0;
+
+        //Добавление всех объектов в массив для проверки пересечений
+        ArrayList<GuiModel> objs = new ArrayList<>();
+        objs.addAll(Radiants);
+        objs.addAll(Receivers);
+
+        //Трассировка лучей
+        for (int i=0; i<Radiants.size(); i++) {
+            for (double phi=0.0; phi<Math.PI; phi=phi+Math.PI/dphi) {
+                //System.out.println(Radiants.get(i).getDirectivityData());
+                for (int tetaInd=0; tetaInd<Radiants.get(i).getDirectivityData().getSize();tetaInd++) {
+                    double teta = Radiants.get(i).getDirectivityData().getPoint(tetaInd).getIndex();
+                    traceRay(Radiants.get(i), phi, teta, maxDistance, objs, dphi);
+                }
+            }
+        }
+
+        for (int i=0; i<Receivers.size(); i++) {
+            System.out.println(i+"   "+Receivers.get(i).getEnergy());
+        }
+
+        /*
         ResultDataTable[][] resultData = new ResultDataTable[Receivers.size()][Radiants.size()];
         Diagram[][] IpL = new Diagram[Receivers.size()][Radiants.size()];
         double Ip;
@@ -85,7 +115,6 @@ public class Model{
 
         //Временно не используемый метод
         /*
-        //Добавление всех объектов в массив для проверки пересечений
         ArrayList<GuiModel> objs = new ArrayList<>();
         objs.addAll(Radiants);
         //getE
@@ -113,10 +142,44 @@ public class Model{
         ModelGUI.setY(0);
 
         //Установка расположения
-        ModelScene modelScene = new ModelScene(ModelGUI, 1280, (720 - 50),Radiants,Receivers,resultData);
-        ModelGUI.setScene(modelScene.getScene());
+        //ModelScene modelScene = new ModelScene(ModelGUI, 1280, (720 - 50),Radiants,Receivers,resultData);
+        //ModelGUI.setScene(modelScene.getScene());
 
         ModelGUI.show();
         ModelGUI.setMaximized(true);
+    }
+
+    private void traceRay(RadiantModel radiant, double phi, double teta, double maxDistance, ArrayList<GuiModel> objs, double dphi) {
+        double currentX = radiant.getX();
+        double currentY = radiant.getY();
+        double currentZ = radiant.getZ();
+        for (double r = 0; r<=maxDistance; r++) {
+            currentX = currentX + Math.sin(teta-Math.PI/2)*Math.cos(phi);
+            currentY = currentY + Math.sin(teta-Math.PI/2)*Math.sin(phi);
+            currentZ = currentZ + Math.cos(teta-Math.PI/2);
+            for (int i=0; i<objs.size(); i++) {
+                if (checkIntersection(currentX, currentY, currentZ, objs.get(i))) {
+                    if (i>=Radiants.size()) {
+                        Receivers.get(i-Radiants.size()).addEnergy(radiant.getDirectivityData().getByAngle(teta).getMeaning()/dphi);
+                        //System.out.println(currentX+"  "+currentY+"  "+currentZ);
+                        //System.out.println(i+" "+phi+"  "+teta+"  "+(radiant.getDirectivityData().getByAngle(teta).getMeaning()/dphi));
+                        return;
+                    }
+                }
+            }
+        }
+    }
+
+    private boolean checkIntersection(double x, double y, double z, GuiModel obj) {
+        if (Math.floor(x) != obj.getX()) {
+            return false;
+        }
+        if (Math.floor(y) != obj.getY()) {
+            return false;
+        }
+        if (Math.floor(z) != obj.getZ()) {
+            return false;
+        }
+        return true;
     }
 }

@@ -107,7 +107,9 @@ public class Directivity {
                 if (Math.abs(dependence.get(i).getIndex()-x)<Math.abs(dependence.get(i-1).getIndex()-x)) {
                     return dependence.get(i);
                 }
-                else dependence.get(i-1);
+                else {
+                    return dependence.get(i-1);
+                }
             }
         }
         return new DiagramPoint(0,0);
