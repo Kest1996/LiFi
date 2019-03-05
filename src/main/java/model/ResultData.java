@@ -1,22 +1,21 @@
 package model;
 
+import radiation.Receiver;
+
 public class ResultData {
 
-    private double L;
+    private ReceiverModel Receiver;
+    private double Percent;
     private double SNR;
     private double modulation;
     private String modulationName;
     private double speed;
 
-    /**
-     * Конструктор
-     * @param L
-     * @param Ip
-     */
 
-    public ResultData(double L, double Ip) {
-        this.L = L;
-        this.SNR = ReceiverModel.countSNR(Ip);
+    public ResultData(ReceiverModel receiverModel, double Ip) {
+        this.Receiver = receiverModel;
+        this.Percent = receiverModel.getEnergy();
+        this.SNR = receiverModel.countSNR(Ip);
         this.modulation = countModulation(this.SNR);
         this.modulationName = countModulationName(this.modulation);
         this.speed = countSpeed(this.modulation);
@@ -65,8 +64,12 @@ public class ResultData {
         return (Math.round(c*100)/100.0);
     }
 
-    public double getL() {
-        return L;
+    public ReceiverModel getReceiver() {
+        return Receiver;
+    }
+
+    public double getPercent() {
+        return Percent;
     }
 
     public double getModulation() {

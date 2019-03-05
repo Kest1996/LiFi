@@ -56,23 +56,20 @@ public class ModelScene {
      * @param resultData
      */
 
-    ModelScene(Stage stage, int width, int height, ArrayList<RadiantModel> Radiants, ArrayList<ReceiverModel> Receivers, ResultDataTable[][] resultData) {
+    ModelScene(Stage stage, int width, int height, ArrayList<RadiantModel> Radiants, ArrayList<ReceiverModel> Receivers, ResultDataTable[] resultData) {
         this(stage, width, height);
-        double marginY = 300;
-        double c = 0;
-        for (int i=0;i<Receivers.size();i++){
-            for (int j=0;j<Radiants.size();j++){
-                ModelTable modelTable = new ModelTable(resultData[i][j].getList());
-                TableView<ResultData> table = modelTable.getTable();
-                rootNodeChild.getChildren().add(table);
-                rootNodeChild.setLeftAnchor(table, 10.0);
-                rootNodeChild.setTopAnchor(table, marginY*c);
-                rootNodeChild.setRightAnchor(table, width-730.0);
-                modelTable.setSizes();
-                addLabel("Приемник: "+Receivers.get(i).getName(),740,marginY*c);
-                addLabel("Источник: "+Radiants.get(j).getName(),740,marginY*c+30);
-                c = c+1;
-            }
+        double tableY = 50;
+        for (int j=0;j<Radiants.size();j++){
+            ModelTable modelTable = new ModelTable(resultData[j].getList());
+            TableView<ResultData> table = modelTable.getTable();
+            rootNodeChild.getChildren().add(table);
+            rootNodeChild.setLeftAnchor(table, 10.0);
+            rootNodeChild.setTopAnchor(table, tableY);
+            rootNodeChild.setRightAnchor(table, 200.0);
+            modelTable.setSizes();
+            addLabel("Источник: "+Radiants.get(j).getName(),width -190,tableY+30.0);
+            tableY = tableY+30+table.getItems().size()*25+50;
+            System.out.println(table.getItems().size()*25+50);
         }
     }
 

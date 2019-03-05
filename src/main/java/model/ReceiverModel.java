@@ -139,11 +139,12 @@ public class ReceiverModel extends GuiModel {
      * @return
      */
 
-    public Diagram getIp(double Fe,Diagram spectrum, Diagram eyeSensitivity){
+    public double getIp(double Fe,Diagram spectrum, Diagram eyeSensitivity){
 
         //Коэффциенты получаемого сигнала
-        double[] optEff = {0.0000152,0.00000366,0.00000174,0.00000107,0.00000064,0.0000005,0.000000318,0.00000025};
-        double[] L = {0.5,1.0,1.5,2.0,2.5,3.0,3.5,4.0};
+        //double[] optEff = {0.0000152,0.00000366,0.00000174,0.00000107,0.00000064,0.0000005,0.000000318,0.00000025};
+        //double[] L = {0.5,1.0,1.5,2.0,2.5,3.0,3.5,4.0};
+        double optEff = energy;
 
         //Пересчет световых параметров в энергетические
         Diagram Fe_x_V = new Diagram("Fe*V");
@@ -176,6 +177,7 @@ public class ReceiverModel extends GuiModel {
         спектральных кривых (спектральной плотности излучения источника света и спектральной чувствительности фотодиода)
         */
 
+        /*
         ArrayList<Diagram> FeL = new ArrayList<>();
         for (int i=0;i<L.length;i++) {
             FeL.add(new Diagram("Fe"+L[i]));
@@ -185,10 +187,20 @@ public class ReceiverModel extends GuiModel {
                 FeL.get(i).add(j,spectrumn.getByX(j).getMeaning()*sensitivityData.getByX(j).getMeaning()*optEff[i]);
             }
         }
+        */
+
+        Diagram FeL = new Diagram("Fe");
+        start = getStartIndex(spectrumn,sensitivityData);
+        end = getLastIndex(spectrumn,sensitivityData);
+        for (double j=start;j<=end;j++) {
+            FeL.add(j,spectrumn.getByX(j).getMeaning()*sensitivityData.getByX(j).getMeaning()*optEff);
+        }
 
         /*Расчет величины фототока Ip [A], получаемого в результате спектральных преобразований
         с учетом геометрических потерь на фотоприёмнике.*/
 
+
+        /*
         Diagram Ip = new Diagram("Ip");
         double IpL;
         for (int i=0;i<L.length;i++) {
@@ -199,6 +211,13 @@ public class ReceiverModel extends GuiModel {
                 IpL = IpL + (FeL.get(i).getByX(j+1).getMeaning()+FeL.get(i).getByX(j).getMeaning())*(j+1-j)/2;
             }
             Ip.add(L[i],IpL);
+        }
+        */
+        double Ip = 0;
+        start = FeL.getBegin();
+        end = FeL.getEnd();
+        for (double j=start;j<=end-1;j++) {
+            Ip = Ip + (FeL.getByX(j+1).getMeaning()+FeL.getByX(j).getMeaning())*(j+1-j)/2;
         }
         return Ip;
     }
@@ -255,11 +274,11 @@ public class ReceiverModel extends GuiModel {
      * @return
      */
 
-    public static double countSNR(double Ip) {
+    public double countSNR(double Ip) {
         double n = 1.1; //Глубина модуляции переменного СВЧ излучения
         double q = 1.6*Math.pow(10,-19); //Элементарный заряд
         double KbT = 2.59*Math.pow(10,-2); //Тепловая энергия
-        double Rl = 50.0; //Сопротвдение нагрузки приемника
+        double Rl = 50.0; //Сопротвление нагрузки приемника
         double B = 1.5*Math.pow(10,8); //Ширина полосы пропускания
         double Id = 20*Math.pow(10,-9);
         double SNR1 = (sqr(n)*sqr(Ip)*Rl)/(8*q*KbT*B); //Термический
@@ -282,5 +301,9 @@ public class ReceiverModel extends GuiModel {
 
     public String getName() {
         return name;
+    }
+
+    public void setEnergy(double energy) {
+        this.energy = energy;
     }
 }

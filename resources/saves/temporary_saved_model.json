@@ -1,0 +1,4 @@
+{
+  "Radiants": [{"name":"PLCC 5630 64 diodes","Fe":4416.0,"spectrum":"PLCC 5630","directivity":"test2","x":0,"y":0,"z":0},{"name":"PLCC 5630 64 diodes","Fe":4416.0,"spectrum":"PLCC 5630","directivity":"test2","x":5,"y":5,"z":0},{"name":"PLCC 5630 64 diodes","Fe":4416.0,"spectrum":"PLCC 5630","directivity":"test2","x":10,"y":10,"z":0}],
+  "Receivers": [{"name":"FDS100","sensitivity":"FDS100","x":0,"y":0,"z":10},{"name":"FDS100","sensitivity":"FDS100","x":5,"y":5,"z":10},{"name":"FDS100","sensitivity":"FDS100","x":10,"y":10,"z":5}]
+}

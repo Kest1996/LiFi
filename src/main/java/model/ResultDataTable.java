@@ -11,22 +11,25 @@ public class ResultDataTable {
     ArrayList<ResultData> resultData = new ArrayList<>();
     ObservableList<ResultData> resultDataList;
 
-    /**
-     * Конструктор
-     * @param IpL
-     */
-
-    public ResultDataTable(Diagram IpL){
-        double[] L = IpL.getXAxis();
-        double[] Ip = IpL.getYAxis();
-        for (int i=0;i<L.length;i++){
-            this.resultData.add(new ResultData(L[i],Ip[i]));
-        }
+    /*
+    public ResultDataTable(double Ip){
+        //double[] Ip = Ip.getYAxis();
+        this.resultData.add(new ResultData(Ip));
         resultDataList = FXCollections.observableList(resultData);
     }
+    */
+    public ResultDataTable() {
 
+    }
+
+    public void add(ResultData newResultData) {
+        this.resultData.add(newResultData);
+    }
     public ResultData get(int index) {
         return resultData.get(index);
+    }
+    public void setList() {
+        resultDataList = FXCollections.observableList(resultData);
     }
 
     public ObservableList<ResultData> getList() {

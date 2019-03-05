@@ -3,10 +3,7 @@ package model;
 import gui.ReceiverCoefData;
 import javafx.collections.FXCollections;
 import javafx.stage.Stage;
-import radiation.Diagram;
-import radiation.Directivity;
-import radiation.Radiant;
-import radiation.Receiver;
+import radiation.*;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -80,7 +77,7 @@ public class Model{
         //Точность по углу фи (ось X)
         double dphi = 1000.0;
         //Предельная дальность отслеживания
-        double maxDistance = 2000.0;
+        double maxDistance = 100.0;
 
         //Добавление всех объектов в массив для проверки пересечений
         ArrayList<GuiModel> objs = new ArrayList<>();
@@ -88,29 +85,25 @@ public class Model{
         objs.addAll(Receivers);
 
         //Трассировка лучей
+        ResultDataTable[] resultData = new ResultDataTable[Radiants.size()];
         for (int i=0; i<Radiants.size(); i++) {
-            for (double phi=0.0; phi<Math.PI; phi=phi+Math.PI/dphi) {
-                //System.out.println(Radiants.get(i).getDirectivityData());
+            for (double phi=0.0; phi<Math.PI/2; phi=phi+Math.PI/dphi) {
                 for (int tetaInd=0; tetaInd<Radiants.get(i).getDirectivityData().getSize();tetaInd++) {
-                    double teta = Radiants.get(i).getDirectivityData().getPoint(tetaInd).getIndex();
-                    traceRay(Radiants.get(i), phi, teta, maxDistance, objs, dphi);
+                    //double teta = Radiants.get(i).getDirectivityData().getPoint(tetaInd).getIndex();
+                    //traceRay(Radiants.get(i), phi, teta, maxDistance, objs, dphi);
+                    traceRay(Radiants.get(i), phi, Radiants.get(i).getDirectivityData().getPoint(tetaInd), maxDistance, objs, dphi);
                 }
             }
-        }
-
-        for (int i=0; i<Receivers.size(); i++) {
-            System.out.println(i+"   "+Receivers.get(i).getEnergy());
+            resultData[i] = new ResultDataTable();
+            for (int j=0; j<Receivers.size(); j++) {
+                resultData[i].add(new ResultData(Receivers.get(j), Receivers.get(j).getIp(Radiants.get(i).getFe(), Radiants.get(i).getSpectrumData(), eyeSensitivity)));
+                //System.out.println(i+"   "+j+"   "+Receivers.get(j).getEnergy());
+                Receivers.get(j).setEnergy(0.0);
+            }
+            resultData[i].setList();
         }
 
         /*
-        ResultDataTable[][] resultData = new ResultDataTable[Receivers.size()][Radiants.size()];
-        Diagram[][] IpL = new Diagram[Receivers.size()][Radiants.size()];
-        double Ip;
-        for (int i=0; i<Receivers.size();i++){
-            for (int j=0; j<Radiants.size();j++) {
-                resultData[i][j] = new ResultDataTable(Receivers.get(i).getIp(Radiants.get(j).getFe(), Radiants.get(j).getSpectrumData(), eyeSensitivity));
-            }
-        }
 
 
         //Временно не используемый метод
@@ -142,8 +135,8 @@ public class Model{
         ModelGUI.setY(0);
 
         //Установка расположения
-        //ModelScene modelScene = new ModelScene(ModelGUI, 1280, (720 - 50),Radiants,Receivers,resultData);
-        //ModelGUI.setScene(modelScene.getScene());
+        ModelScene modelScene = new ModelScene(ModelGUI, 1280, (720 - 50),Radiants,Receivers,resultData);
+        ModelGUI.setScene(modelScene.getScene());
 
         ModelGUI.show();
         ModelGUI.setMaximized(true);
@@ -163,6 +156,26 @@ public class Model{
                         Receivers.get(i-Radiants.size()).addEnergy(radiant.getDirectivityData().getByAngle(teta).getMeaning()/dphi);
                         //System.out.println(currentX+"  "+currentY+"  "+currentZ);
                         //System.out.println(i+" "+phi+"  "+teta+"  "+(radiant.getDirectivityData().getByAngle(teta).getMeaning()/dphi));
+                        return;
+                    }
+                }
+            }
+        }
+    }
+
+    private void traceRay(RadiantModel radiant, double phi, DiagramPoint tetaP, double maxDistance, ArrayList<GuiModel> objs, double dphi) {
+        double currentX = radiant.getX();
+        double currentY = radiant.getY();
+        double currentZ = radiant.getZ();
+        double teta = tetaP.getIndex();
+        for (double r = 0; r<=maxDistance; r++) {
+            currentX = currentX + Math.sin(teta-Math.PI/2)*Math.cos(phi);
+            currentY = currentY + Math.sin(teta-Math.PI/2)*Math.sin(phi);
+            currentZ = currentZ + Math.cos(teta-Math.PI/2);
+            for (int i=0; i<objs.size(); i++) {
+                if (checkIntersection(currentX, currentY, currentZ, objs.get(i))) {
+                    if (i>=Radiants.size()) {
+                        Receivers.get(i-Radiants.size()).addEnergy(tetaP.getMeaning()/dphi);
                         return;
                     }
                 }
