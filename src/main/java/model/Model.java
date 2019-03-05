@@ -77,7 +77,7 @@ public class Model{
         //Точность по углу фи (ось X)
         double dphi = 1000.0;
         //Предельная дальность отслеживания
-        double maxDistance = 100.0;
+        double maxDistance = 1000.0;
 
         //Добавление всех объектов в массив для проверки пересечений
         ArrayList<GuiModel> objs = new ArrayList<>();
