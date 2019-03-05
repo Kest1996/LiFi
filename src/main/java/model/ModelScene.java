@@ -69,7 +69,6 @@ public class ModelScene {
             modelTable.setSizes();
             addLabel("Источник: "+Radiants.get(j).getName(),width -190,tableY+30.0);
             tableY = tableY+30+table.getItems().size()*25+50;
-            System.out.println(table.getItems().size()*25+50);
         }
     }
 
