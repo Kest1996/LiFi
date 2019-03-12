@@ -77,7 +77,7 @@ public class Model{
         //Точность по углу фи (ось X)
         double dphi = 1000.0;
         //Предельная дальность отслеживания
-        double maxDistance = 1000.0;
+        double maxDistance = 4000.0;
 
         //Добавление всех объектов в массив для проверки пересечений
         ArrayList<GuiModel> objs = new ArrayList<>();
@@ -97,7 +97,6 @@ public class Model{
             resultData[i] = new ResultDataTable();
             for (int j=0; j<Receivers.size(); j++) {
                 resultData[i].add(new ResultData(Receivers.get(j), Receivers.get(j).getIp(Radiants.get(i).getFe(), Radiants.get(i).getSpectrumData(), eyeSensitivity)));
-                //System.out.println(i+"   "+j+"   "+Receivers.get(j).getEnergy());
                 Receivers.get(j).setEnergy(0.0);
             }
             resultData[i].setList();
@@ -184,15 +183,24 @@ public class Model{
     }
 
     private boolean checkIntersection(double x, double y, double z, GuiModel obj) {
-        if (Math.floor(x) != obj.getX()) {
+        if (roundcord(x,0.0000000001) != obj.getX()) {
             return false;
         }
-        if (Math.floor(y) != obj.getY()) {
+        if (roundcord(y,0.0000000001) != obj.getY()) {
             return false;
         }
-        if (Math.floor(z) != obj.getZ()) {
+        if (roundcord(z,0.0000000001) != obj.getZ()) {
             return false;
         }
         return true;
+    }
+
+    private double roundcord(double x, double dx) {
+        if (Math.abs(Math.ceil(x))-Math.abs(x)<=dx) {
+            return Math.ceil(x);
+        }
+        else {
+            return Math.floor(x);
+        }
     }
 }

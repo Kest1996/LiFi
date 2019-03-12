@@ -171,7 +171,6 @@ public class EditRadiantGUI {
      */
 
     private void okButtonReact(ActionEvent ae) {
-        System.out.println(spectrumList);
         Radiant radiant = new Radiant(Double.parseDouble(FeTF.getText()),nameTF.getText(),spectrumList.getValue().toString(),directivityList.getValue().toString());
         radiantGUI.setObject(radiant,this);
     }
