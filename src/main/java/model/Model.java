@@ -141,27 +141,6 @@ public class Model{
         ModelGUI.setMaximized(true);
     }
 
-    private void traceRay(RadiantModel radiant, double phi, double teta, double maxDistance, ArrayList<GuiModel> objs, double dphi) {
-        double currentX = radiant.getX();
-        double currentY = radiant.getY();
-        double currentZ = radiant.getZ();
-        for (double r = 0; r<=maxDistance; r++) {
-            currentX = currentX + Math.sin(teta-Math.PI/2)*Math.cos(phi);
-            currentY = currentY + Math.sin(teta-Math.PI/2)*Math.sin(phi);
-            currentZ = currentZ + Math.cos(teta-Math.PI/2);
-            for (int i=0; i<objs.size(); i++) {
-                if (checkIntersection(currentX, currentY, currentZ, objs.get(i))) {
-                    if (i>=Radiants.size()) {
-                        Receivers.get(i-Radiants.size()).addEnergy(radiant.getDirectivityData().getByAngle(teta).getMeaning()/dphi);
-                        //System.out.println(currentX+"  "+currentY+"  "+currentZ);
-                        //System.out.println(i+" "+phi+"  "+teta+"  "+(radiant.getDirectivityData().getByAngle(teta).getMeaning()/dphi));
-                        return;
-                    }
-                }
-            }
-        }
-    }
-
     private void traceRay(RadiantModel radiant, double phi, DiagramPoint tetaP, double maxDistance, ArrayList<GuiModel> objs, double dphi) {
         double currentX = radiant.getX();
         double currentY = radiant.getY();
