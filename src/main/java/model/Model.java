@@ -29,12 +29,12 @@ public class Model{
     public Model(String name, String fileName) {
 
         Receivers = ModelLoader.getReceivers(fileName);
-        for (int i=0;i<Receivers.size();i++) {
+        for (int i=0; i<Receivers.size(); i++) {
             Receivers.get(i).setSensitivity();
         }
 
         Radiants = ModelLoader.getRadiants(fileName);
-        for (int i=0;i<Radiants.size();i++) {
+        for (int i=0; i<Radiants.size(); i++) {
             Radiants.get(i).setSpectrum();
             Radiants.get(i).setDirectivity();
         }
@@ -42,21 +42,21 @@ public class Model{
         //Чтение библиотеки спектров источников
         File directory = new File("src/main/resources/Library/RadiantDiagram");
         File[] arrayFiles = directory.listFiles();
-        for (int i=0;i<=arrayFiles.length-1;i++){
+        for (int i=0; i<=arrayFiles.length-1; i++){
             radiantDiagrams.add(new Diagram(arrayFiles[i].getName().substring(0,arrayFiles[i].getName().length()-4),arrayFiles[i]));
         }
 
         //Чтение библиотеки направленности приемников
         directory = new File("src/main/resources/Library/Directivity");
         arrayFiles = directory.listFiles();
-        for (int i=0;i<=arrayFiles.length-1;i++){
+        for (int i=0; i<=arrayFiles.length-1; i++){
             radiantDirectivities.add(new Directivity(arrayFiles[i].getName().substring(0,arrayFiles[i].getName().length()-4),arrayFiles[i]));
         }
 
         //Чтение библиотеки кривых чувствительности приемников
         directory = new File("src/main/resources/Library/ReceiverDiagram");
         arrayFiles = directory.listFiles();
-        for (int i=0;i<=arrayFiles.length-1;i++){
+        for (int i=0; i<=arrayFiles.length-1; i++){
             receiverDiagrams.add(new Diagram(arrayFiles[i].getName().substring(0,arrayFiles[i].getName().length()-4),arrayFiles[i]));
         }
 
@@ -88,10 +88,8 @@ public class Model{
         ResultDataTable[] resultData = new ResultDataTable[Radiants.size()];
         for (int i=0; i<Radiants.size(); i++) {
             for (double phi=0.0; phi<Math.PI/2; phi=phi+Math.PI/dphi) {
-                for (int tetaInd=0; tetaInd<Radiants.get(i).getDirectivityData().getSize();tetaInd++) {
-                    //double teta = Radiants.get(i).getDirectivityData().getPoint(tetaInd).getIndex();
-                    //traceRay(Radiants.get(i), phi, teta, maxDistance, objs, dphi);
-                    traceRay(Radiants.get(i), phi, Radiants.get(i).getDirectivityData().getPoint(tetaInd), maxDistance, objs, dphi);
+                for (int tetaInd=0; tetaInd<Radiants.get(i).getDirectivityData().getSize(); tetaInd++) {
+                    traceRay(Radiants.get(i), phi, tetaInd, maxDistance, objs, dphi);
                 }
             }
             resultData[i] = new ResultDataTable();
@@ -141,10 +139,11 @@ public class Model{
         ModelGUI.setMaximized(true);
     }
 
-    private void traceRay(RadiantModel radiant, double phi, DiagramPoint tetaP, double maxDistance, ArrayList<GuiModel> objs, double dphi) {
+    private void traceRay(RadiantModel radiant, double phi, int tetaInd, double maxDistance, ArrayList<GuiModel> objs, double dphi) {
         double currentX = radiant.getX();
         double currentY = radiant.getY();
         double currentZ = radiant.getZ();
+        DiagramPoint tetaP = radiant.getDirectivityData().getPoint(tetaInd);
         double teta = tetaP.getIndex();
         for (double r = 0; r<=maxDistance; r++) {
             currentX = currentX + Math.sin(teta-Math.PI/2)*Math.cos(phi);
