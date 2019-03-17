@@ -7,16 +7,24 @@ import radiation.*;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.stream.Collectors;
 
 public class Model{
 
-    private ArrayList<RadiantModel> Radiants = new ArrayList<>();
-    private ArrayList<ReceiverModel> Receivers = new ArrayList<>();
+    private CopyOnWriteArrayList<RadiantModel> Radiants = new CopyOnWriteArrayList<>();
+    private CopyOnWriteArrayList<ReceiverModel> Receivers = new CopyOnWriteArrayList<>();
 
     public transient ArrayList<Diagram> radiantDiagrams = new ArrayList<>();
     public transient ArrayList<Diagram> receiverDiagrams = new ArrayList<>();
     public transient ArrayList<Directivity> radiantDirectivities = new ArrayList<>();
+
+    private ArrayBlockingQueue<Ray> queueForRead = new ArrayBlockingQueue<>(8, true);
 
     private transient Diagram eyeSensitivity;
 
@@ -28,12 +36,12 @@ public class Model{
 
     public Model(String name, String fileName) {
 
-        Receivers = ModelLoader.getReceivers(fileName);
-        for (int i=0; i<Receivers.size(); i++) {
+        Receivers = new CopyOnWriteArrayList<>(ModelLoader.getReceivers(fileName));
+        for (int i = 0; i < Receivers.size(); i++) {
             Receivers.get(i).setSensitivity();
         }
 
-        Radiants = ModelLoader.getRadiants(fileName);
+        Radiants = new CopyOnWriteArrayList<>(ModelLoader.getRadiants(fileName));
         for (int i=0; i<Radiants.size(); i++) {
             Radiants.get(i).setSpectrum();
             Radiants.get(i).setDirectivity();
@@ -84,12 +92,28 @@ public class Model{
         objs.addAll(Radiants);
         objs.addAll(Receivers);
 
+        ExecutorService service = Executors.newCachedThreadPool();
+
+        for (int i = 0; i < 8; i++) {
+            service.execute(new Runnable() {
+                @Override
+                public void run() {
+                    while (true) {
+                        Ray ray = queueForRead.poll();
+                        if (ray.getDphi() == -1)
+                            return;
+                        traceRay(ray.radiant, ray.phi, ray.tetaInd, ray.maxDistance, ray.objs, ray.dphi);
+                    }
+                }
+            });
+        }
+
         //Трассировка лучей
         ResultDataTable[] resultData = new ResultDataTable[Radiants.size()];
         for (int i=0; i<Radiants.size(); i++) {
             for (double phi=0.0; phi<Math.PI/2; phi=phi+Math.PI/dphi) {
                 for (int tetaInd=0; tetaInd<Radiants.get(i).getDirectivityData().getSize(); tetaInd++) {
-                    traceRay(Radiants.get(i), phi, tetaInd, maxDistance, objs, dphi);
+                    queueForRead.add(new Ray(Radiants.get(i), phi, tetaInd, maxDistance, objs, dphi));
                 }
             }
             resultData[i] = new ResultDataTable();
@@ -99,6 +123,11 @@ public class Model{
             }
             resultData[i].setList();
         }
+        for (int i = 0; i < 8; i++) {
+            queueForRead.add(new Ray(Radiants.get(i), -1, -1, maxDistance, objs, -1));
+        }
+
+        service.shutdown();
 
         /*
 
@@ -132,7 +161,7 @@ public class Model{
         ModelGUI.setY(0);
 
         //Установка расположения
-        ModelScene modelScene = new ModelScene(ModelGUI, 1280, (720 - 50),Radiants,Receivers,resultData);
+        ModelScene modelScene = new ModelScene(ModelGUI, 1280, (720 - 50),new ArrayList<>(Radiants.stream().collect(Collectors.toList())),new ArrayList<>(Receivers.stream().collect(Collectors.toList())),resultData);
         ModelGUI.setScene(modelScene.getScene());
 
         ModelGUI.show();
@@ -179,6 +208,48 @@ public class Model{
         }
         else {
             return Math.floor(x);
+        }
+    }
+
+    private class Ray {
+        RadiantModel radiant;
+        double phi;
+        int tetaInd;
+        double maxDistance;
+        ArrayList<GuiModel> objs;
+        double dphi;
+
+        public Ray(RadiantModel radiant, double phi, int tetaInd, double maxDistance, ArrayList<GuiModel> objs, double dphi) {
+            this.radiant = radiant;
+            this.phi = phi;
+            this.tetaInd = tetaInd;
+            this.maxDistance = maxDistance;
+            this.objs = objs;
+            this.dphi = dphi;
+        }
+
+        public RadiantModel getRadiant() {
+            return radiant;
+        }
+
+        public double getPhi() {
+            return phi;
+        }
+
+        public int getTetaInd() {
+            return tetaInd;
+        }
+
+        public double getMaxDistance() {
+            return maxDistance;
+        }
+
+        public ArrayList<GuiModel> getObjs() {
+            return objs;
+        }
+
+        public double getDphi() {
+            return dphi;
         }
     }
 }
