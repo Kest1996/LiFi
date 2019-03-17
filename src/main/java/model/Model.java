@@ -100,9 +100,11 @@ public class Model{
                 public void run() {
                     while (true) {
                         Ray ray = queueForRead.poll();
-                        if (ray.getDphi() == -1)
-                            return;
-                        traceRay(ray.radiant, ray.phi, ray.tetaInd, ray.maxDistance, ray.objs, ray.dphi);
+                        if (ray != null) {
+                            if (ray.getDphi() == -1)
+                                return;
+                            traceRay(ray.radiant, ray.phi, ray.tetaInd, ray.maxDistance, ray.objs, ray.dphi);
+                        }
                     }
                 }
             });
@@ -113,7 +115,12 @@ public class Model{
         for (int i=0; i<Radiants.size(); i++) {
             for (double phi=0.0; phi<Math.PI/2; phi=phi+Math.PI/dphi) {
                 for (int tetaInd=0; tetaInd<Radiants.get(i).getDirectivityData().getSize(); tetaInd++) {
-                    queueForRead.add(new Ray(Radiants.get(i), phi, tetaInd, maxDistance, objs, dphi));
+                    while (true) {
+                        if (queueForRead.size() < 8) {
+                            queueForRead.add(new Ray(Radiants.get(i), phi, tetaInd, maxDistance, objs, dphi));
+                            return;
+                        }
+                    }
                 }
             }
             resultData[i] = new ResultDataTable();
@@ -123,9 +130,11 @@ public class Model{
             }
             resultData[i].setList();
         }
+        System.out.println(0);
         for (int i = 0; i < 8; i++) {
             queueForRead.add(new Ray(Radiants.get(i), -1, -1, maxDistance, objs, -1));
         }
+        System.out.println(1);
 
         service.shutdown();
 
