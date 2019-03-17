@@ -24,9 +24,12 @@ public class Model{
     public transient ArrayList<Diagram> receiverDiagrams = new ArrayList<>();
     public transient ArrayList<Directivity> radiantDirectivities = new ArrayList<>();
 
-    private ArrayBlockingQueue<Ray> queueForRead = new ArrayBlockingQueue<>(8, true);
+    int threads = 8;
+
+    private ArrayBlockingQueue<Ray> queueForRead = new ArrayBlockingQueue<>(threads, true);
 
     private transient Diagram eyeSensitivity;
+
 
     /**
      * Конструктор
@@ -94,7 +97,7 @@ public class Model{
 
         ExecutorService service = Executors.newCachedThreadPool();
 
-        for (int i = 0; i < 8; i++) {
+        for (int i = 0; i < threads; i++) {
             service.execute(new Runnable() {
                 @Override
                 public void run() {
@@ -116,9 +119,9 @@ public class Model{
             for (double phi=0.0; phi<Math.PI/2; phi=phi+Math.PI/dphi) {
                 for (int tetaInd=0; tetaInd<Radiants.get(i).getDirectivityData().getSize(); tetaInd++) {
                     while (true) {
-                        if (queueForRead.size() < 8) {
+                        if (queueForRead.size() < threads) {
                             queueForRead.add(new Ray(Radiants.get(i), phi, tetaInd, maxDistance, objs, dphi));
-                            return;
+                            break;
                         }
                     }
                 }
@@ -131,8 +134,8 @@ public class Model{
             resultData[i].setList();
         }
         System.out.println(0);
-        for (int i = 0; i < 8; i++) {
-            queueForRead.add(new Ray(Radiants.get(i), -1, -1, maxDistance, objs, -1));
+        for (int i = 0; i < threads; i++) {
+            queueForRead.add(new Ray(Radiants.get(0), -1, -1, maxDistance, objs, -1));
         }
         System.out.println(1);
 
